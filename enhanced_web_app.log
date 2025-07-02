@@ -1,0 +1,140 @@
+2025-07-02 13:12:26,666 - __main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:12:26,715 - __main__ - INFO - Starting enhanced PII Generator with robust features
+2025-07-02 13:12:26,727 - werkzeug - INFO -  * Restarting with stat
+2025-07-02 13:12:27,083 - __main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:12:27,129 - __main__ - INFO - Starting enhanced PII Generator with robust features
+2025-07-02 13:12:27,140 - werkzeug - WARNING -  * Debugger is active!
+2025-07-02 13:12:27,144 - werkzeug - INFO -  * Debugger PIN: 105-360-294
+(30932) wsgi starting up on http://0.0.0.0:5001
+(30932) accepted ('127.0.0.1', 54336)
+127.0.0.1 - - [02/Jul/2025 13:12:41] "GET / HTTP/1.1" 200 37822 0.004161
+(30932) accepted ('127.0.0.1', 55307)
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+127.0.0.1 - - [02/Jul/2025 13:46:15] "POST /api/generate HTTP/1.1" 200 242 0.001589
+Generating records:   0%|          | 0/1000 [00:00<?, ?it/s]2025-07-02 13:46:16,273 - __mp_main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:46:16,273 - __mp_main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:46:16,273 - __mp_main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:46:16,273 - __mp_main__ - INFO - Person model rebuild completed during imports
+Generating records:   0%|          | 3/1000 [00:00<03:44,  4.44it/s]✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+Generating records:   1%|          | 12/1000 [00:00<01:02, 15.93it/s]
+2025-07-02 13:46:16,562 - src.core.performance - INFO - Performance Statistics:
+2025-07-02 13:46:16,562 - src.core.performance - INFO -   Total records: 12
+2025-07-02 13:46:16,562 - src.core.performance - INFO -   Time elapsed: 0.75 seconds
+2025-07-02 13:46:16,562 - src.core.performance - INFO -   Rate: 15.91 records/second
+2025-07-02 13:46:16,563 - src.core.performance - INFO -   Memory used: 200.41 MB
+2025-07-02 13:46:18,056 - __main__ - INFO - Successfully generated 12 records in 0.75s
+(30932) accepted ('127.0.0.1', 55509)
+127.0.0.1 - - [02/Jul/2025 13:47:22] "GET /api/status/cdce17d8-60c8-430d-b3fa-ce26b8f71d07 HTTP/1.1" 404 331 0.000334
+(30932) accepted ('127.0.0.1', 55848)
+127.0.0.1 - - [02/Jul/2025 13:50:01] "GET / HTTP/1.1" 200 37846 0.001160
+127.0.0.1 - - [02/Jul/2025 13:50:01] "GET /socket.io/?EIO=4&transport=polling&t=PVAEApu HTTP/1.1" 200 300 0.000501
+2025-07-02 13:50:01,409 - __main__ - INFO - Client connected: 4x_0VkTuTZwseOkhAAAB
+127.0.0.1 - - [02/Jul/2025 13:50:01] "POST /socket.io/?EIO=4&transport=polling&t=PVAEAq0&sid=I_vgNRb3Ve8gGJ5zAAAA HTTP/1.1" 200 219 0.001011
+(30932) accepted ('127.0.0.1', 55851)
+(30932) accepted ('127.0.0.1', 55852)
+127.0.0.1 - - [02/Jul/2025 13:50:01] "GET /socket.io/?EIO=4&transport=polling&t=PVAEAq0.0&sid=I_vgNRb3Ve8gGJ5zAAAA HTTP/1.1" 200 181 0.000115
+127.0.0.1 - - [02/Jul/2025 13:50:01] "GET /socket.io/?EIO=4&transport=polling&t=PVAEArc&sid=I_vgNRb3Ve8gGJ5zAAAA HTTP/1.1" 200 181 0.000154
+127.0.0.1 - - [02/Jul/2025 13:50:01] "GET /socket.io/?EIO=4&transport=polling&t=PVAEArn&sid=I_vgNRb3Ve8gGJ5zAAAA HTTP/1.1" 200 181 0.000103
+127.0.0.1 - - [02/Jul/2025 13:50:01] "GET /favicon.ico HTTP/1.1" 404 355 0.000981
+127.0.0.1 - - [02/Jul/2025 13:50:01] "GET /api/system/status HTTP/1.1" 200 302 0.000591
+127.0.0.1 - - [02/Jul/2025 13:50:08] "POST /api/generate HTTP/1.1" 200 266 0.004447
+127.0.0.1 - - [02/Jul/2025 13:50:08] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.002025
+127.0.0.1 - - [02/Jul/2025 13:50:09] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.004187
+127.0.0.1 - - [02/Jul/2025 13:50:10] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000736
+127.0.0.1 - - [02/Jul/2025 13:50:11] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000295
+127.0.0.1 - - [02/Jul/2025 13:50:12] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000309
+127.0.0.1 - - [02/Jul/2025 13:50:14] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000872
+127.0.0.1 - - [02/Jul/2025 13:50:15] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.001866
+127.0.0.1 - - [02/Jul/2025 13:50:16] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000504
+127.0.0.1 - - [02/Jul/2025 13:50:17] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000287
+127.0.0.1 - - [02/Jul/2025 13:50:18] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000640
+127.0.0.1 - - [02/Jul/2025 13:50:19] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000407
+127.0.0.1 - - [02/Jul/2025 13:50:20] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.001616
+127.0.0.1 - - [02/Jul/2025 13:50:21] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000535
+127.0.0.1 - - [02/Jul/2025 13:50:22] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000568
+127.0.0.1 - - [02/Jul/2025 13:50:23] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000818
+127.0.0.1 - - [02/Jul/2025 13:50:24] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.011338
+127.0.0.1 - - [02/Jul/2025 13:50:25] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000616
+127.0.0.1 - - [02/Jul/2025 13:50:26] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 579 0.000947
+✅ Person model using natural forward reference resolution
+Generating records:   0%|          | 0/691 [00:00<?, ?it/s]127.0.0.1 - - [02/Jul/2025 13:50:27] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000635
+2025-07-02 13:50:28,029 - __mp_main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:50:28,029 - __mp_main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:50:28,029 - __mp_main__ - INFO - Person model rebuild completed during imports
+2025-07-02 13:50:28,030 - __mp_main__ - INFO - Person model rebuild completed during imports
+127.0.0.1 - - [02/Jul/2025 13:50:28] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000262
+127.0.0.1 - - [02/Jul/2025 13:50:29] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000265
+127.0.0.1 - - [02/Jul/2025 13:50:30] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000272
+127.0.0.1 - - [02/Jul/2025 13:50:31] "GET /api/system/status HTTP/1.1" 200 302 0.000502
+127.0.0.1 - - [02/Jul/2025 13:50:31] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000310
+127.0.0.1 - - [02/Jul/2025 13:50:32] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000263
+127.0.0.1 - - [02/Jul/2025 13:50:33] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000316
+127.0.0.1 - - [02/Jul/2025 13:50:34] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000255
+127.0.0.1 - - [02/Jul/2025 13:50:35] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000272
+127.0.0.1 - - [02/Jul/2025 13:50:36] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000302
+127.0.0.1 - - [02/Jul/2025 13:50:37] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000324
+127.0.0.1 - - [02/Jul/2025 13:50:38] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.000326
+127.0.0.1 - - [02/Jul/2025 13:50:40] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.006101
+127.0.0.1 - - [02/Jul/2025 13:50:41] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.006674
+127.0.0.1 - - [02/Jul/2025 13:50:43] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 607 0.006062
+Generating records:  25%|██▍       | 172/691 [00:15<00:47, 10.89it/s]127.0.0.1 - - [02/Jul/2025 13:50:45] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 615 0.006080
+Generating records:  50%|████▉     | 345/691 [00:18<00:15, 21.72it/s]127.0.0.1 - - [02/Jul/2025 13:50:48] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 617 0.000285
+Generating records:  75%|███████▍  | 518/691 [00:21<00:05, 30.23it/s]127.0.0.1 - - [02/Jul/2025 13:50:51] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 628 0.012410
+Generating records: 100%|██████████| 691/691 [00:27<00:00, 28.93it/s]127.0.0.1 - - [02/Jul/2025 13:50:55] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 628 0.000492
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+✅ Person model using natural forward reference resolution
+Generating records: 100%|██████████| 691/691 [00:27<00:00, 24.94it/s]
+2025-07-02 13:50:55,288 - src.core.performance - INFO - Performance Statistics:
+2025-07-02 13:50:55,288 - src.core.performance - INFO -   Total records: 691
+2025-07-02 13:50:55,288 - src.core.performance - INFO -   Time elapsed: 27.71 seconds
+2025-07-02 13:50:55,288 - src.core.performance - INFO -   Rate: 24.94 records/second
+2025-07-02 13:50:55,288 - src.core.performance - INFO -   Memory used: 5051.20 MB
+127.0.0.1 - - [02/Jul/2025 13:50:56] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000259
+127.0.0.1 - - [02/Jul/2025 13:50:57] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000932
+127.0.0.1 - - [02/Jul/2025 13:50:58] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000998
+127.0.0.1 - - [02/Jul/2025 13:50:59] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000934
+127.0.0.1 - - [02/Jul/2025 13:51:00] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000849
+127.0.0.1 - - [02/Jul/2025 13:51:01] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000287
+127.0.0.1 - - [02/Jul/2025 13:51:01] "GET /api/system/status HTTP/1.1" 200 302 0.000282
+127.0.0.1 - - [02/Jul/2025 13:51:02] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000307
+127.0.0.1 - - [02/Jul/2025 13:51:03] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 633 0.000313
+127.0.0.1 - - [02/Jul/2025 13:51:04] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 635 0.000288
+2025-07-02 13:51:04,871 - __main__ - INFO - Successfully generated 1000 records in 46.63s
+127.0.0.1 - - [02/Jul/2025 13:51:05] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 765 0.000799
+127.0.0.1 - - [02/Jul/2025 13:51:05] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c/results HTTP/1.1" 200 434100 0.005012
+127.0.0.1 - - [02/Jul/2025 13:51:05] "GET /api/statistics/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 42040 0.006089
+127.0.0.1 - - [02/Jul/2025 13:51:05] "GET /api/task/753e666f-5cb8-45bb-b653-fa0f464db77c/results HTTP/1.1" 200 434100 0.010261
+127.0.0.1 - - [02/Jul/2025 13:51:05] "GET /api/statistics/753e666f-5cb8-45bb-b653-fa0f464db77c HTTP/1.1" 200 42040 0.005474
+127.0.0.1 - - [02/Jul/2025 13:51:31] "GET /api/system/status HTTP/1.1" 200 302 0.000861
+127.0.0.1 - - [02/Jul/2025 13:52:01] "GET /api/system/status HTTP/1.1" 200 302 0.000506
+127.0.0.1 - - [02/Jul/2025 13:52:31] "GET /api/system/status HTTP/1.1" 200 302 0.000616
+127.0.0.1 - - [02/Jul/2025 13:53:01] "GET /api/system/status HTTP/1.1" 200 302 0.001234
+127.0.0.1 - - [02/Jul/2025 13:54:17] "GET /api/system/status HTTP/1.1" 200 302 0.001841
+127.0.0.1 - - [02/Jul/2025 13:55:17] "GET /api/system/status HTTP/1.1" 200 302 0.001423
+127.0.0.1 - - [02/Jul/2025 13:56:17] "GET /api/system/status HTTP/1.1" 200 302 0.001041
+127.0.0.1 - - [02/Jul/2025 13:57:17] "GET /api/system/status HTTP/1.1" 200 302 0.000925
+127.0.0.1 - - [02/Jul/2025 13:58:17] "GET /api/system/status HTTP/1.1" 200 302 0.001089
+127.0.0.1 - - [02/Jul/2025 13:59:17] "GET /api/system/status HTTP/1.1" 200 302 0.002020
+127.0.0.1 - - [02/Jul/2025 14:00:17] "GET /api/system/status HTTP/1.1" 200 302 0.000951
+127.0.0.1 - - [02/Jul/2025 14:01:17] "GET /api/system/status HTTP/1.1" 200 302 0.001199
+127.0.0.1 - - [02/Jul/2025 14:02:17] "GET /api/system/status HTTP/1.1" 200 302 0.001284
+127.0.0.1 - - [02/Jul/2025 14:03:17] "GET /api/system/status HTTP/1.1" 200 302 0.001223
+127.0.0.1 - - [02/Jul/2025 14:04:17] "GET /api/system/status HTTP/1.1" 200 302 0.001366
+127.0.0.1 - - [02/Jul/2025 14:05:17] "GET /api/system/status HTTP/1.1" 200 302 0.001747
+127.0.0.1 - - [02/Jul/2025 14:06:17] "GET /api/system/status HTTP/1.1" 200 302 0.001256
+127.0.0.1 - - [02/Jul/2025 14:07:17] "GET /api/system/status HTTP/1.1" 200 302 0.001467
+127.0.0.1 - - [02/Jul/2025 14:08:17] "GET /api/system/status HTTP/1.1" 200 302 0.000550

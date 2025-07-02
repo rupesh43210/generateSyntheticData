@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PII Generator - Synthetic Data Generation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            height: calc(100vh - 200px);
+        }
+
+        .control-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .results-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .profile-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-option {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .profile-option:hover {
+            border-color: #667eea;
+        }
+
+        .profile-option.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table th {
+            background: #f5f7fa;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .data-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .chart-container {
+            margin: 2rem 0;
+            height: 300px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>
+                <div class="logo">PG</div>
+                PII Generator
+            </h1>
+            <div>
+                <span style="color: #666;">High-Performance Synthetic Data Generation</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="control-panel">
+                <h2 style="margin-bottom: 1.5rem;">Generation Settings</h2>
+                
+                <div class="form-group">
+                    <label>Data Quality Profile</label>
+                    <div class="profile-selector">
+                        <div class="profile-option selected" data-profile="minimal">
+                            <strong>Minimal</strong>
+                            <small style="display: block; margin-top: 0.25rem;">Clean data</small>
+                        </div>
+                        <div class="profile-option" data-profile="realistic">
+                            <strong>Realistic</strong>
+                            <small style="display: block; margin-top: 0.25rem;">Production-like</small>
+                        </div>
+                        <div class="profile-option" data-profile="messy">
+                            <strong>Messy</strong>
+                            <small style="display: block; margin-top: 0.25rem;">Stress testing</small>
+                        </div>
+                        <div class="profile-option" data-profile="extreme">
+                            <strong>Extreme</strong>
+                            <small style="display: block; margin-top: 0.25rem;">Chaos testing</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="records">Number of Records</label>
+                    <input type="number" id="records" value="1000" min="1" max="1000000">
+                </div>
+
+                <div class="form-group">
+                    <label for="threads">Threads</label>
+                    <input type="number" id="threads" value="4" min="1" max="16">
+                </div>
+
+                <div class="form-group">
+                    <label for="batch-size">Batch Size</label>
+                    <input type="number" id="batch-size" value="1000" min="100" max="10000">
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="include-families">
+                        <label for="include-families" style="margin-bottom: 0;">Generate Family Clusters</label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="families-group" style="display: none;">
+                    <label for="num-families">Number of Families</label>
+                    <input type="number" id="num-families" value="100" min="1" max="10000">
+                </div>
+
+                <button class="btn btn-primary" id="generate-btn">
+                    <i class="fas fa-play"></i>
+                    Generate Data
+                </button>
+
+                <div class="progress-bar" id="progress-bar" style="display: none;">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="results-panel">
+                <div class="alert alert-success" id="success-alert"></div>
+                <div class="alert alert-error" id="error-alert"></div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Generating synthetic data...</p>
+                </div>
+
+                <div id="results" style="display: none;">
+                    <h2 style="margin-bottom: 1rem;">Generation Results</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="total-records">0</div>
+                            <div class="stat-label">Total Records</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="generation-time">0s</div>
+                            <div class="stat-label">Generation Time</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="records-per-sec">0</div>
+                            <div class="stat-label">Records/Second</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="unique-addresses">0</div>
+                            <div class="stat-label">Unique Addresses</div>
+                        </div>
+                    </div>
+
+                    <div class="export-buttons">
+                        <button class="btn btn-secondary" id="export-csv">
+                            <i class="fas fa-file-csv"></i>
+                            Export CSV
+                        </button>
+                        <button class="btn btn-secondary" id="export-json">
+                            <i class="fas fa-file-code"></i>
+                            Export JSON
+                        </button>
+                        <button class="btn btn-secondary" id="view-stats">
+                            <i class="fas fa-chart-bar"></i>
+                            View Statistics
+                        </button>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="preview">Data Preview</div>
+                        <div class="tab" data-tab="statistics">Statistics</div>
+                    </div>
+
+                    <div class="tab-content active" id="preview-tab">
+                        <table class="data-table" id="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>SSN</th>
+                                    <th>DOB</th>
+                                    <th>Gender</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Employer</th>
+                                    <th>Physical</th>
+                                    <th>Education</th>
+                                    <th>Lifestyle</th>
+                                    <th>Vehicle</th>
+                                </tr>
+                            </thead>
+                            <tbody id="preview-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-content" id="statistics-tab">
+                        <div id="statistics-content">
+                            <h3>Demographic Statistics</h3>
+                            <div class="chart-container" id="gender-chart"></div>
+                            
+                            <h3>Employment Statistics</h3>
+                            <div class="chart-container" id="industry-chart"></div>
+                            
+                            <h3>Data Quality Metrics</h3>
+                            <div id="quality-metrics"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="welcome" style="text-align: center; padding: 4rem;">
+                    <i class="fas fa-database" style="font-size: 4rem; color: #667eea; margin-bottom: 1rem; display: block;"></i>
+                    <h2 style="color: #666; margin-bottom: 1rem;">Welcome to PII Generator</h2>
+                    <p style="color: #888; max-width: 500px; margin: 0 auto;">
+                        Configure your settings on the left and click "Generate Data" to create high-quality synthetic personal data for testing and development.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTaskId = null;
+
+        // Profile selector
+        document.querySelectorAll('.profile-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.profile-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Family checkbox toggle
+        document.getElementById('include-families').addEventListener('change', function() {
+            document.getElementById('families-group').style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab + '-tab').classList.add('active');
+            });
+        });
+
+        // Generate data
+        document.getElementById('generate-btn').addEventListener('click', async function() {
+            const btn = this;
+            btn.disabled = true;
+            
+            // Hide alerts
+            document.getElementById('success-alert').style.display = 'none';
+            document.getElementById('error-alert').style.display = 'none';
+            
+            // Show loading
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('progress-bar').style.display = 'block';
+            
+            // Animate progress bar
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                document.getElementById('progress-fill').style.width = progress + '%';
+            }, 500);
+            
+            try {
+                const selectedProfile = document.querySelector('.profile-option.selected').dataset.profile;
+                
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        records: parseInt(document.getElementById('records').value),
+                        variability_profile: selectedProfile,
+                        threads: parseInt(document.getElementById('threads').value),
+                        batch_size: parseInt(document.getElementById('batch-size').value),
+                        include_families: document.getElementById('include-families').checked,
+                        num_families: parseInt(document.getElementById('num-families').value)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                clearInterval(progressInterval);
+                document.getElementById('progress-fill').style.width = '100%';
+                
+                if (data.success) {
+                    currentTaskId = data.task_id;
+                    
+                    // Show success message
+                    document.getElementById('success-alert').textContent = 
+                        `Successfully generated ${data.total_records.toLocaleString()} records in ${data.generation_time}s`;
+                    document.getElementById('success-alert').style.display = 'block';
+                    
+                    // Update statistics
+                    document.getElementById('total-records').textContent = data.total_records.toLocaleString();
+                    document.getElementById('generation-time').textContent = data.generation_time + 's';
+                    document.getElementById('records-per-sec').textContent = data.records_per_second.toLocaleString();
+                    document.getElementById('unique-addresses').textContent = data.statistics.unique_addresses.toLocaleString();
+                    
+                    // Populate preview table
+                    const tbody = document.getElementById('preview-tbody');
+                    tbody.innerHTML = '';
+                    
+                    data.preview_data.forEach(person => {
+                        const row = tbody.insertRow();
+                        
+                        // Physical characteristics
+                        const physical = person.physical_profile ? 
+                            `${person.physical_profile.height}, ${person.physical_profile.eye_color} eyes` : 'N/A';
+                        
+                        // Education
+                        const education = person.education_profile ? 
+                            `${person.education_profile.highest_degree}${person.education_profile.major ? ' in ' + person.education_profile.major : ''}` : 'N/A';
+                        
+                        // Lifestyle
+                        const lifestyle = person.lifestyle_profile ? 
+                            `${person.lifestyle_profile.lifestyle_category} | ${person.lifestyle_profile.personality_type}` : 'N/A';
+                        
+                        // Vehicle
+                        const vehicle = person.vehicle_profile ? 
+                            person.vehicle_profile.primary_vehicle : 'N/A';
+                        
+                        row.innerHTML = `
+                            <td>${person.first_name} ${person.last_name}</td>
+                            <td>${person.ssn || 'N/A'}</td>
+                            <td>${person.date_of_birth}</td>
+                            <td>${person.gender}</td>
+                            <td>${person.email_addresses[0]?.email || 'N/A'}</td>
+                            <td>${person.phone_numbers[0]?.number || 'N/A'}</td>
+                            <td>${person.employment_history[0]?.employer || 'N/A'}</td>
+                            <td style="font-size: 0.85em;">${physical}</td>
+                            <td style="font-size: 0.85em;">${education}</td>
+                            <td style="font-size: 0.85em;">${lifestyle}</td>
+                            <td style="font-size: 0.85em;">${vehicle}</td>
+                        `;
+                    });
+                    
+                    // Show results
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('results').style.display = 'block';
+                    
+                    // Load statistics
+                    loadStatistics(currentTaskId);
+                } else {
+                    throw new Error(data.error || 'Generation failed');
+                }
+            } catch (error) {
+                clearInterval(progressInterval);
+                document.getElementById('error-alert').textContent = 'Error: ' + error.message;
+                document.getElementById('error-alert').style.display = 'block';
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('welcome').style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                setTimeout(() => {
+                    document.getElementById('progress-bar').style.display = 'none';
+                    document.getElementById('progress-fill').style.width = '0%';
+                }, 1000);
+            }
+        });
+
+        // Export functions
+        document.getElementById('export-csv').addEventListener('click', function() {
+            if (currentTaskId) {
+                window.location.href = `/api/export/${currentTaskId}/csv`;
+            }
+        });
+
+        document.getElementById('export-json').addEventListener('click', function() {
+            if (currentTaskId) {
+                window.location.href = `/api/export/${currentTaskId}/json`;
+            }
+        });
+
+        // View statistics
+        document.getElementById('view-stats').addEventListener('click', function() {
+            document.querySelector('.tab[data-tab="statistics"]').click();
+        });
+
+        // Load statistics
+        async function loadStatistics(taskId) {
+            try {
+                const response = await fetch(`/api/statistics/${taskId}`);
+                const stats = await response.json();
+                
+                // Update quality metrics
+                const qualityHtml = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${stats.data_quality.missing_ssn}</div>
+                            <div class="stat-label">Missing SSN</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${stats.data_quality.missing_phone}</div>
+                            <div class="stat-label">Missing Phone</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${stats.data_quality.missing_email}</div>
+                            <div class="stat-label">Missing Email</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${stats.data_quality.duplicate_ssn}</div>
+                            <div class="stat-label">Duplicate SSN</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('quality-metrics').innerHTML = qualityHtml;
+                
+            } catch (error) {
+                console.error('Failed to load statistics:', error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+# Database Connection Configuration
+database:
+  # Connection method: 'connection_string' or 'individual_params'
+  connection_method: 'individual_params'
+  
+  # Individual connection parameters (when connection_method = 'individual_params')
+  server: 'localhost'  # or your Azure SQL server: 'myserver.database.windows.net'
+  database: 'TestDatabase'
+  username: 'sa'  # or your Azure SQL username
+  password: 'YourPassword123!'  # Replace with your actual password
+  port: 1433
+  driver: 'ODBC Driver 18 for SQL Server'  # or 'ODBC Driver 17 for SQL Server'
+  
+  # Additional connection options
+  connection_options:
+    Encrypt: 'yes'
+    TrustServerCertificate: 'yes'  # Set to 'no' for production Azure SQL
+    Connection_Timeout: 30
+    
+  # OR use direct connection string (when connection_method = 'connection_string')
+  # connection_string: "Driver={ODBC Driver 18 for SQL Server};Server=localhost,1433;Database=TestDatabase;Uid=sa;Pwd=YourPassword123!;Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
+
+# Schema and table management
+schema:
+  name: 'dbo'  # Schema name
+  
+  # Table behavior: 'create_if_not_exists', 'drop_and_create', 'append_only'
+  table_behavior: 'create_if_not_exists'
+  
+  # Table name prefix (optional)
+  table_prefix: 'pii_'
+  
+  # Enable/disable specific tables
+  tables:
+    people: true
+    addresses: true
+    phone_numbers: true
+    email_addresses: true
+    employment_history: true
+    financial_profiles: true
+
+# Data insertion behavior
+data_insertion:
+  # Insert mode: 'append', 'upsert', 'skip_duplicates'
+  mode: 'append'
+  
+  # Batch processing
+  batch_size: 1000
+  
+  # Handle duplicates (when mode = 'skip_duplicates' or 'upsert')
+  duplicate_key_columns:
+    people: ['ssn']
+    addresses: ['person_id', 'address_type', 'street_1', 'city', 'state', 'zip_code']
+    phone_numbers: ['area_code', 'number']
+    email_addresses: ['email']

@@ -1,0 +1,54 @@
+# Realistic data quality configuration for production-like test data
+data_quality_profile:
+  missing_data_rate: 0.05      # 5% missing data
+  typo_rate: 0.02              # 2% typos
+  duplicate_rate: 0.001        # 0.1% duplicates
+  outlier_rate: 0.01           # 1% outliers
+  inconsistency_rate: 0.03     # 3% format inconsistencies
+
+# Performance settings
+num_threads: 4
+batch_size: 1000
+
+# Feature toggles
+enable_relationships: true
+enable_temporal_patterns: true
+enable_geographic_clustering: true
+enable_financial_correlations: true
+
+# Data ranges
+min_addresses_per_person: 1
+max_addresses_per_person: 3
+min_phones_per_person: 1
+max_phones_per_person: 2
+min_emails_per_person: 1
+max_emails_per_person: 2
+min_jobs_per_person: 1
+max_jobs_per_person: 5
+
+# Geographic distribution (US population percentages)
+geographic_distribution:
+  CA: 0.12    # California
+  TX: 0.09    # Texas
+  FL: 0.06    # Florida
+  NY: 0.06    # New York
+  PA: 0.04    # Pennsylvania
+  IL: 0.04    # Illinois
+  OH: 0.04    # Ohio
+  GA: 0.03    # Georgia
+  NC: 0.03    # North Carolina
+  MI: 0.03    # Michigan
+  Other: 0.46 # Remaining states
+
+# Industry distribution
+industry_distribution:
+  Technology: 0.15
+  Healthcare: 0.13
+  Retail: 0.12
+  Finance: 0.08
+  Education: 0.08
+  Manufacturing: 0.08
+  Construction: 0.06
+  Hospitality: 0.05
+  Transportation: 0.05
+  Other: 0.20

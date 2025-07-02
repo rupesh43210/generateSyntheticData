@@ -1,0 +1,27 @@
+# High-performance configuration for large-scale data generation
+data_quality_profile:
+  missing_data_rate: 0.03
+  typo_rate: 0.01
+  duplicate_rate: 0.0005
+  outlier_rate: 0.005
+  inconsistency_rate: 0.02
+
+# Optimized for speed
+num_threads: 8
+batch_size: 10000
+
+# Simplified features for performance
+enable_relationships: false
+enable_temporal_patterns: true
+enable_geographic_clustering: false
+enable_financial_correlations: true
+
+# Reduced complexity
+min_addresses_per_person: 1
+max_addresses_per_person: 2
+min_phones_per_person: 1
+max_phones_per_person: 1
+min_emails_per_person: 1
+max_emails_per_person: 1
+min_jobs_per_person: 1
+max_jobs_per_person: 3

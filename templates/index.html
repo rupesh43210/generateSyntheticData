@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PII Generator - Synthetic Data Generation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Enhanced PII Generator - Robust Synthetic Data Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     <style>
         * {
             margin: 0;
@@ -14,102 +13,71 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 20px;
         }
 
-        header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .header {
+            text-align: center;
             color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
 
         .main-content {
             display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 2rem;
-            height: calc(100vh - 200px);
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
         }
 
-        .control-panel {
+        .card {
             background: white;
             border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            overflow-y: auto;
-        }
-
-        .results-panel {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            overflow-y: auto;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            margin-bottom: 8px;
+            font-weight: 600;
             color: #555;
         }
 
-        input[type="number"],
-        select {
+        input, select {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e0e0e0;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 16px;
             transition: border-color 0.3s;
         }
 
-        input[type="number"]:focus,
-        select:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -117,150 +85,111 @@
         .checkbox-group {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
-            justify-content: center;
         }
 
-        .btn-primary:hover {
+        .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-primary:disabled {
+        .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
+        .progress-section {
+            grid-column: 1 / -1;
+            display: none;
         }
 
-        .btn-secondary:hover {
-            background: #e0e0e0;
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e1e5e9;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
         }
 
-        .profile-selector {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 15px;
+            transition: width 0.3s ease;
+            width: 0%;
         }
 
-        .profile-option {
-            padding: 0.75rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
+        .progress-text {
             text-align: center;
-            transition: all 0.3s;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
 
-        .profile-option:hover {
-            border-color: #667eea;
-        }
-
-        .profile-option.selected {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: transparent;
-        }
-
-        .stats-grid {
+        .progress-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 15px;
         }
 
-        .stat-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
+        .progress-stat {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
             text-align: center;
         }
 
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2c3e50;
+        .progress-stat .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
         }
 
-        .stat-label {
+        .progress-stat .label {
             color: #666;
-            margin-top: 0.5rem;
+            font-size: 0.9em;
         }
 
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+        .results-section {
+            grid-column: 1 / -1;
+            display: none;
         }
 
-        .data-table th,
-        .data-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .data-table th {
-            background: #f5f7fa;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .data-table tr:hover {
-            background: #f9f9f9;
-        }
-
-        .tabs {
+        .results-tabs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 2px solid #e1e5e9;
+            margin-bottom: 20px;
         }
 
         .tab {
-            padding: 0.75rem 1.5rem;
+            padding: 15px 25px;
             cursor: pointer;
             border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab:hover {
-            color: #667eea;
+            transition: border-color 0.3s;
         }
 
         .tab.active {
-            color: #667eea;
             border-bottom-color: #667eea;
+            color: #667eea;
+            font-weight: 600;
         }
 
         .tab-content {
@@ -271,460 +200,816 @@
             display: block;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .chart-container {
-            margin: 2rem 0;
-            height: 300px;
-        }
-
-        .progress-bar {
+        .data-table {
             width: 100%;
-            height: 20px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 1rem;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            width: 0%;
-            transition: width 0.3s;
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
         }
 
-        .alert {
-            padding: 1rem;
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .export-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            padding: 10px 20px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .system-status {
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
         }
 
-        .alert-success {
+        .success-message {
             background: #d4edda;
             color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             border: 1px solid #c3e6cb;
         }
 
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .validation-summary {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .real-time-log {
+            height: 300px;
+            overflow-y: auto;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .log-timestamp {
+            color: #95a5a6;
+        }
+
+        .log-level-info {
+            color: #3498db;
+        }
+
+        .log-level-warning {
+            color: #f39c12;
+        }
+
+        .log-level-error {
+            color: #e74c3c;
         }
 
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
-                height: auto;
             }
-
-            .stats-grid {
+            
+            .export-controls {
+                flex-direction: column;
+            }
+            
+            .progress-details {
                 grid-template-columns: 1fr;
             }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .feature-highlight {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>
-                <div class="logo">PG</div>
-                PII Generator
-            </h1>
-            <div>
-                <span style="color: #666;">High-Performance Synthetic Data Generation</span>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Enhanced PII Generator</h1>
+            <p>Robust Synthetic Data Platform with Real-time Monitoring & Advanced Features</p>
+        </div>
+
+        <div class="feature-highlight">
+            <h3>🎯 New Enhanced Features</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Real-time Progress</h4>
+                    <p>Live WebSocket updates with detailed metrics</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🛡️</div>
+                    <h4>Advanced Validation</h4>
+                    <p>Comprehensive data quality checks</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h4>Multiple Export Formats</h4>
+                    <p>CSV, JSON, Parquet, XML support</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔧</div>
+                    <h4>Error Recovery</h4>
+                    <p>Automatic error handling & recovery</p>
+                </div>
             </div>
         </div>
-    </header>
 
-    <div class="container">
+        <div class="system-status" id="systemStatus">
+            <strong>System Status:</strong> <span id="statusText">Initializing...</span>
+        </div>
+
         <div class="main-content">
-            <div class="control-panel">
-                <h2 style="margin-bottom: 1.5rem;">Generation Settings</h2>
+            <div class="card">
+                <h2>🎛️ Generation Configuration</h2>
+                <form id="generationForm">
+                    <div class="form-group">
+                        <label for="records">Number of Records (1-100,000):</label>
+                        <input type="number" id="records" name="records" value="1000" min="1" max="100000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="variabilityProfile">Data Quality Profile:</label>
+                        <select id="variabilityProfile" name="variability_profile">
+                            <option value="minimal">Minimal - High Quality</option>
+                            <option value="realistic" selected>Realistic - Moderate Quality</option>
+                            <option value="messy">Messy - Poor Quality</option>
+                            <option value="extreme">Extreme - Very Poor Quality</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="threads">Processing Threads (1-16):</label>
+                        <input type="number" id="threads" name="threads" value="4" min="1" max="16">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="batchSize">Batch Size (100-10,000):</label>
+                        <input type="number" id="batchSize" name="batch_size" value="1000" min="100" max="10000">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="enableValidation" name="enable_validation" checked>
+                            <label for="enableValidation">Enable Data Validation</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="includeFamilies" name="include_families">
+                            <label for="includeFamilies">Generate Family Clusters</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="familiesGroup" style="display: none;">
+                        <label for="numFamilies">Number of Families:</label>
+                        <input type="number" id="numFamilies" name="num_families" value="100" min="1" max="1000">
+                    </div>
+
+                    <button type="submit" class="btn" id="generateBtn">
+                        🚀 Generate Enhanced Data
+                    </button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>📊 Real-time Monitoring</h2>
+                <div id="connectionStatus" class="success-message">
+                    🔌 WebSocket: <span id="wsStatus">Connecting...</span>
+                </div>
                 
-                <div class="form-group">
-                    <label>Data Quality Profile</label>
-                    <div class="profile-selector">
-                        <div class="profile-option selected" data-profile="minimal">
-                            <strong>Minimal</strong>
-                            <small style="display: block; margin-top: 0.25rem;">Clean data</small>
-                        </div>
-                        <div class="profile-option" data-profile="realistic">
-                            <strong>Realistic</strong>
-                            <small style="display: block; margin-top: 0.25rem;">Production-like</small>
-                        </div>
-                        <div class="profile-option" data-profile="messy">
-                            <strong>Messy</strong>
-                            <small style="display: block; margin-top: 0.25rem;">Stress testing</small>
-                        </div>
-                        <div class="profile-option" data-profile="extreme">
-                            <strong>Extreme</strong>
-                            <small style="display: block; margin-top: 0.25rem;">Chaos testing</small>
-                        </div>
+                <div id="realtimeLog" class="real-time-log">
+                    <div class="log-entry">
+                        <span class="log-timestamp">[00:00:00]</span>
+                        <span class="log-level-info">[INFO]</span> System initialized
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="records">Number of Records</label>
-                    <input type="number" id="records" value="1000" min="1" max="1000000">
-                </div>
-
-                <div class="form-group">
-                    <label for="threads">Threads</label>
-                    <input type="number" id="threads" value="4" min="1" max="16">
-                </div>
-
-                <div class="form-group">
-                    <label for="batch-size">Batch Size</label>
-                    <input type="number" id="batch-size" value="1000" min="100" max="10000">
-                </div>
-
-                <div class="form-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="include-families">
-                        <label for="include-families" style="margin-bottom: 0;">Generate Family Clusters</label>
-                    </div>
-                </div>
-
-                <div class="form-group" id="families-group" style="display: none;">
-                    <label for="num-families">Number of Families</label>
-                    <input type="number" id="num-families" value="100" min="1" max="10000">
-                </div>
-
-                <button class="btn btn-primary" id="generate-btn">
-                    <i class="fas fa-play"></i>
-                    Generate Data
-                </button>
-
-                <div class="progress-bar" id="progress-bar" style="display: none;">
-                    <div class="progress-fill" id="progress-fill"></div>
                 </div>
             </div>
 
-            <div class="results-panel">
-                <div class="alert alert-success" id="success-alert"></div>
-                <div class="alert alert-error" id="error-alert"></div>
-
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Generating synthetic data...</p>
+            <div class="card progress-section" id="progressSection">
+                <h2>⚡ Generation Progress</h2>
+                <div class="progress-text" id="progressText">Initializing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
-
-                <div id="results" style="display: none;">
-                    <h2 style="margin-bottom: 1rem;">Generation Results</h2>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value" id="total-records">0</div>
-                            <div class="stat-label">Total Records</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="generation-time">0s</div>
-                            <div class="stat-label">Generation Time</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="records-per-sec">0</div>
-                            <div class="stat-label">Records/Second</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="unique-addresses">0</div>
-                            <div class="stat-label">Unique Addresses</div>
-                        </div>
+                
+                <div class="progress-details">
+                    <div class="progress-stat">
+                        <div class="value" id="progressPercent">0%</div>
+                        <div class="label">Complete</div>
                     </div>
-
-                    <div class="export-buttons">
-                        <button class="btn btn-secondary" id="export-csv">
-                            <i class="fas fa-file-csv"></i>
-                            Export CSV
-                        </button>
-                        <button class="btn btn-secondary" id="export-json">
-                            <i class="fas fa-file-code"></i>
-                            Export JSON
-                        </button>
-                        <button class="btn btn-secondary" id="view-stats">
-                            <i class="fas fa-chart-bar"></i>
-                            View Statistics
-                        </button>
+                    <div class="progress-stat">
+                        <div class="value" id="recordsProcessed">0</div>
+                        <div class="label">Records</div>
                     </div>
-
-                    <div class="tabs">
-                        <div class="tab active" data-tab="preview">Data Preview</div>
-                        <div class="tab" data-tab="statistics">Statistics</div>
+                    <div class="progress-stat">
+                        <div class="value" id="processingRate">0</div>
+                        <div class="label">Records/sec</div>
                     </div>
-
-                    <div class="tab-content active" id="preview-tab">
-                        <table class="data-table" id="preview-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>SSN</th>
-                                    <th>DOB</th>
-                                    <th>Gender</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Employer</th>
-                                    <th>Physical</th>
-                                    <th>Education</th>
-                                    <th>Lifestyle</th>
-                                    <th>Vehicle</th>
-                                </tr>
-                            </thead>
-                            <tbody id="preview-tbody">
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="tab-content" id="statistics-tab">
-                        <div id="statistics-content">
-                            <h3>Demographic Statistics</h3>
-                            <div class="chart-container" id="gender-chart"></div>
-                            
-                            <h3>Employment Statistics</h3>
-                            <div class="chart-container" id="industry-chart"></div>
-                            
-                            <h3>Data Quality Metrics</h3>
-                            <div id="quality-metrics"></div>
-                        </div>
+                    <div class="progress-stat">
+                        <div class="value" id="timeRemaining">--</div>
+                        <div class="label">Time Left</div>
                     </div>
                 </div>
 
-                <div id="welcome" style="text-align: center; padding: 4rem;">
-                    <i class="fas fa-database" style="font-size: 4rem; color: #667eea; margin-bottom: 1rem; display: block;"></i>
-                    <h2 style="color: #666; margin-bottom: 1rem;">Welcome to PII Generator</h2>
-                    <p style="color: #888; max-width: 500px; margin: 0 auto;">
-                        Configure your settings on the left and click "Generate Data" to create high-quality synthetic personal data for testing and development.
-                    </p>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-secondary" onclick="cancelGeneration()">
+                        ❌ Cancel Generation
+                    </button>
+                </div>
+            </div>
+
+            <div class="card results-section" id="resultsSection">
+                <h2>📋 Results & Export</h2>
+                
+                <div id="validationSummary" class="validation-summary" style="display: none;">
+                    <h4>🛡️ Data Validation Summary</h4>
+                    <div id="validationDetails"></div>
+                </div>
+
+                <div class="results-tabs">
+                    <div class="tab active" onclick="showTab('preview')">Preview</div>
+                    <div class="tab" onclick="showTab('statistics')">Statistics</div>
+                    <div class="tab" onclick="showTab('export')">Export</div>
+                </div>
+
+                <div id="previewTab" class="tab-content active">
+                    <div id="dataPreview"></div>
+                </div>
+
+                <div id="statisticsTab" class="tab-content">
+                    <div id="statisticsContent"></div>
+                </div>
+
+                <div id="exportTab" class="tab-content">
+                    <div class="export-controls">
+                        <button class="btn btn-secondary" onclick="exportData('csv')">📄 Export CSV</button>
+                        <button class="btn btn-secondary" onclick="exportData('json')">📋 Export JSON</button>
+                        <button class="btn btn-secondary" onclick="exportData('parquet')">📊 Export Parquet</button>
+                        <button class="btn btn-secondary" onclick="exportData('xml')">🔧 Export XML</button>
+                    </div>
+                    <div id="exportStatus"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Enhanced JavaScript with WebSocket real-time features
+        let socket;
         let currentTaskId = null;
+        let generationStartTime = null;
 
-        // Profile selector
-        document.querySelectorAll('.profile-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.profile-option').forEach(o => o.classList.remove('selected'));
-                this.classList.add('selected');
+        // Initialize WebSocket connection
+        function initializeWebSocket() {
+            socket = io();
+            
+            socket.on('connect', function() {
+                updateWSStatus('Connected ✅', 'success');
+                addLogEntry('Connected to real-time monitoring', 'info');
+                checkSystemStatus();
             });
-        });
 
-        // Family checkbox toggle
-        document.getElementById('include-families').addEventListener('change', function() {
-            document.getElementById('families-group').style.display = this.checked ? 'block' : 'none';
-        });
-
-        // Tab switching
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                this.classList.add('active');
-                document.getElementById(this.dataset.tab + '-tab').classList.add('active');
+            socket.on('disconnect', function() {
+                updateWSStatus('Disconnected ❌', 'error');
+                addLogEntry('Disconnected from server', 'warning');
             });
-        });
 
-        // Generate data
-        document.getElementById('generate-btn').addEventListener('click', async function() {
-            const btn = this;
-            btn.disabled = true;
+            socket.on('progress_update', function(data) {
+                updateProgress(data);
+                addLogEntry(`Progress: ${data.current_count}/${data.total_count} (${data.progress_percent.toFixed(1)}%)`, 'info');
+            });
+
+            socket.on('connected', function(data) {
+                addLogEntry(data.message, 'info');
+            });
+        }
+
+        function updateWSStatus(status, type) {
+            const wsStatus = document.getElementById('wsStatus');
+            const connectionStatus = document.getElementById('connectionStatus');
             
-            // Hide alerts
-            document.getElementById('success-alert').style.display = 'none';
-            document.getElementById('error-alert').style.display = 'none';
+            wsStatus.textContent = status;
+            connectionStatus.className = type === 'success' ? 'success-message' : 'error-message';
+        }
+
+        function addLogEntry(message, level = 'info') {
+            const logContainer = document.getElementById('realtimeLog');
+            const timestamp = new Date().toLocaleTimeString();
             
-            // Show loading
-            document.getElementById('welcome').style.display = 'none';
-            document.getElementById('results').style.display = 'none';
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('progress-bar').style.display = 'block';
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `
+                <span class="log-timestamp">[${timestamp}]</span>
+                <span class="log-level-${level}">[${level.toUpperCase()}]</span> ${message}
+            `;
             
-            // Animate progress bar
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress > 90) progress = 90;
-                document.getElementById('progress-fill').style.width = progress + '%';
-            }, 500);
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
             
+            // Keep only last 100 entries
+            while (logContainer.children.length > 100) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+        }
+
+        async function checkSystemStatus() {
             try {
-                const selectedProfile = document.querySelector('.profile-option.selected').dataset.profile;
+                const response = await fetch('/api/system/status');
+                const status = await response.json();
+                
+                const statusText = document.getElementById('statusText');
+                statusText.textContent = `${status.system_health.toUpperCase()} - Active Tasks: ${status.active_tasks}`;
+                
+                if (status.error_summary.total_errors > 0) {
+                    addLogEntry(`System has ${status.error_summary.total_errors} logged errors`, 'warning');
+                }
+            } catch (error) {
+                addLogEntry('Failed to check system status', 'error');
+            }
+        }
+
+        // Form handling
+        document.getElementById('includeFamilies').addEventListener('change', function() {
+            document.getElementById('familiesGroup').style.display = 
+                this.checked ? 'block' : 'none';
+        });
+
+        document.getElementById('generationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                if (key === 'enable_validation' || key === 'include_families') {
+                    data[key] = true;
+                } else if (key === 'records' || key === 'threads' || key === 'batch_size' || key === 'num_families') {
+                    data[key] = parseInt(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Handle unchecked checkboxes
+            if (!document.getElementById('enableValidation').checked) {
+                data['enable_validation'] = false;
+            }
+            if (!document.getElementById('includeFamilies').checked) {
+                data['include_families'] = false;
+            }
+
+            await startGeneration(data);
+        });
+
+        async function startGeneration(config) {
+            try {
+                addLogEntry(`Starting generation of ${config.records} records`, 'info');
                 
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        records: parseInt(document.getElementById('records').value),
-                        variability_profile: selectedProfile,
-                        threads: parseInt(document.getElementById('threads').value),
-                        batch_size: parseInt(document.getElementById('batch-size').value),
-                        include_families: document.getElementById('include-families').checked,
-                        num_families: parseInt(document.getElementById('num-families').value)
-                    })
+                    body: JSON.stringify(config)
                 });
-                
-                const data = await response.json();
-                
-                clearInterval(progressInterval);
-                document.getElementById('progress-fill').style.width = '100%';
-                
-                if (data.success) {
-                    currentTaskId = data.task_id;
+
+                const result = await response.json();
+
+                if (result.success) {
+                    currentTaskId = result.task_id;
+                    generationStartTime = Date.now();
                     
-                    // Show success message
-                    document.getElementById('success-alert').textContent = 
-                        `Successfully generated ${data.total_records.toLocaleString()} records in ${data.generation_time}s`;
-                    document.getElementById('success-alert').style.display = 'block';
+                    // Subscribe to task updates
+                    if (socket) {
+                        socket.emit('subscribe_task', {task_id: currentTaskId});
+                    }
                     
-                    // Update statistics
-                    document.getElementById('total-records').textContent = data.total_records.toLocaleString();
-                    document.getElementById('generation-time').textContent = data.generation_time + 's';
-                    document.getElementById('records-per-sec').textContent = data.records_per_second.toLocaleString();
-                    document.getElementById('unique-addresses').textContent = data.statistics.unique_addresses.toLocaleString();
+                    showProgressSection();
+                    addLogEntry(`Generation started - Task ID: ${currentTaskId}`, 'info');
                     
-                    // Populate preview table
-                    const tbody = document.getElementById('preview-tbody');
-                    tbody.innerHTML = '';
+                    // Disable form
+                    document.getElementById('generateBtn').disabled = true;
+                    document.getElementById('generateBtn').textContent = '⏳ Generating...';
                     
-                    data.preview_data.forEach(person => {
-                        const row = tbody.insertRow();
-                        
-                        // Physical characteristics
-                        const physical = person.physical_profile ? 
-                            `${person.physical_profile.height}, ${person.physical_profile.eye_color} eyes` : 'N/A';
-                        
-                        // Education
-                        const education = person.education_profile ? 
-                            `${person.education_profile.highest_degree}${person.education_profile.major ? ' in ' + person.education_profile.major : ''}` : 'N/A';
-                        
-                        // Lifestyle
-                        const lifestyle = person.lifestyle_profile ? 
-                            `${person.lifestyle_profile.lifestyle_category} | ${person.lifestyle_profile.personality_type}` : 'N/A';
-                        
-                        // Vehicle
-                        const vehicle = person.vehicle_profile ? 
-                            person.vehicle_profile.primary_vehicle : 'N/A';
-                        
-                        row.innerHTML = `
-                            <td>${person.first_name} ${person.last_name}</td>
-                            <td>${person.ssn || 'N/A'}</td>
-                            <td>${person.date_of_birth}</td>
-                            <td>${person.gender}</td>
-                            <td>${person.email_addresses[0]?.email || 'N/A'}</td>
-                            <td>${person.phone_numbers[0]?.number || 'N/A'}</td>
-                            <td>${person.employment_history[0]?.employer || 'N/A'}</td>
-                            <td style="font-size: 0.85em;">${physical}</td>
-                            <td style="font-size: 0.85em;">${education}</td>
-                            <td style="font-size: 0.85em;">${lifestyle}</td>
-                            <td style="font-size: 0.85em;">${vehicle}</td>
-                        `;
-                    });
-                    
-                    // Show results
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('results').style.display = 'block';
-                    
-                    // Load statistics
-                    loadStatistics(currentTaskId);
+                    // Start polling for results
+                    pollTaskStatus();
                 } else {
-                    throw new Error(data.error || 'Generation failed');
+                    addLogEntry(`Generation failed: ${result.error}`, 'error');
+                    showError(result.error);
                 }
             } catch (error) {
-                clearInterval(progressInterval);
-                document.getElementById('error-alert').textContent = 'Error: ' + error.message;
-                document.getElementById('error-alert').style.display = 'block';
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('welcome').style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                setTimeout(() => {
-                    document.getElementById('progress-bar').style.display = 'none';
-                    document.getElementById('progress-fill').style.width = '0%';
-                }, 1000);
-            }
-        });
-
-        // Export functions
-        document.getElementById('export-csv').addEventListener('click', function() {
-            if (currentTaskId) {
-                window.location.href = `/api/export/${currentTaskId}/csv`;
-            }
-        });
-
-        document.getElementById('export-json').addEventListener('click', function() {
-            if (currentTaskId) {
-                window.location.href = `/api/export/${currentTaskId}/json`;
-            }
-        });
-
-        // View statistics
-        document.getElementById('view-stats').addEventListener('click', function() {
-            document.querySelector('.tab[data-tab="statistics"]').click();
-        });
-
-        // Load statistics
-        async function loadStatistics(taskId) {
-            try {
-                const response = await fetch(`/api/statistics/${taskId}`);
-                const stats = await response.json();
-                
-                // Update quality metrics
-                const qualityHtml = `
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.data_quality.missing_ssn}</div>
-                            <div class="stat-label">Missing SSN</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.data_quality.missing_phone}</div>
-                            <div class="stat-label">Missing Phone</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.data_quality.missing_email}</div>
-                            <div class="stat-label">Missing Email</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.data_quality.duplicate_ssn}</div>
-                            <div class="stat-label">Duplicate SSN</div>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('quality-metrics').innerHTML = qualityHtml;
-                
-            } catch (error) {
-                console.error('Failed to load statistics:', error);
+                addLogEntry(`Request failed: ${error.message}`, 'error');
+                showError('Failed to start generation: ' + error.message);
             }
         }
+
+        function updateProgress(progressData) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
+            const recordsProcessed = document.getElementById('recordsProcessed');
+            const processingRate = document.getElementById('processingRate');
+            const timeRemaining = document.getElementById('timeRemaining');
+
+            // Update progress bar
+            progressFill.style.width = progressData.progress_percent + '%';
+            progressText.textContent = progressData.current_step;
+            progressPercent.textContent = progressData.progress_percent.toFixed(1) + '%';
+            recordsProcessed.textContent = progressData.current_count.toLocaleString();
+            
+            if (progressData.rate_per_second) {
+                processingRate.textContent = Math.round(progressData.rate_per_second).toLocaleString();
+            }
+            
+            if (progressData.estimated_remaining) {
+                const minutes = Math.floor(progressData.estimated_remaining / 60);
+                const seconds = Math.floor(progressData.estimated_remaining % 60);
+                timeRemaining.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            // Check if completed
+            if (progressData.status === 'completed') {
+                onGenerationComplete();
+            } else if (progressData.status === 'failed') {
+                onGenerationFailed(progressData.error_message);
+            }
+        }
+
+        async function pollTaskStatus() {
+            if (!currentTaskId) return;
+
+            try {
+                const response = await fetch(`/api/task/${currentTaskId}`);
+                const taskData = await response.json();
+
+                // Update progress bar regardless of status
+                updateProgress({
+                    status: taskData.status,
+                    progress_percent: taskData.progress_percent || 0,
+                    current_step: taskData.current_step || 'Processing...',
+                    current_count: taskData.current_count || 0,
+                    total_count: taskData.total_count || 0,
+                    elapsed_time: taskData.elapsed_time || 0,
+                    estimated_remaining: taskData.estimated_remaining || 0,
+                    rate_per_second: taskData.rate_per_second || 0
+                });
+
+                if (taskData.status === 'completed') {
+                    onGenerationComplete();
+                } else if (taskData.status === 'failed') {
+                    onGenerationFailed(taskData.error_message);
+                } else if (taskData.status === 'running' || taskData.status === 'pending') {
+                    // Continue polling
+                    setTimeout(pollTaskStatus, 1000);
+                }
+            } catch (error) {
+                addLogEntry(`Failed to check task status: ${error.message}`, 'error');
+                setTimeout(pollTaskStatus, 2000); // Retry with longer delay
+            }
+        }
+
+        async function onGenerationComplete() {
+            addLogEntry('Generation completed successfully!', 'info');
+            
+            // Reset form
+            document.getElementById('generateBtn').disabled = false;
+            document.getElementById('generateBtn').textContent = '🚀 Generate Enhanced Data';
+            
+            // Load results
+            await loadResults();
+            showResultsSection();
+        }
+
+        function onGenerationFailed(errorMessage) {
+            addLogEntry(`Generation failed: ${errorMessage}`, 'error');
+            showError('Generation failed: ' + errorMessage);
+            
+            // Reset form
+            document.getElementById('generateBtn').disabled = false;
+            document.getElementById('generateBtn').textContent = '🚀 Generate Enhanced Data';
+            
+            hideProgressSection();
+        }
+
+        async function loadResults() {
+            try {
+                const response = await fetch(`/api/task/${currentTaskId}/results`);
+                const results = await response.json();
+
+                if (results.success) {
+                    displayPreview(results.preview_data);
+                    await loadStatistics();
+                    
+                    // Show validation summary if available
+                    if (results.validation_summary && results.validation_summary.total_issues > 0) {
+                        showValidationSummary(results.validation_summary);
+                    }
+                    
+                    addLogEntry(`Loaded ${results.total_records} records for preview`, 'info');
+                } else {
+                    addLogEntry(`Failed to load results: ${results.error}`, 'error');
+                }
+            } catch (error) {
+                addLogEntry(`Failed to load results: ${error.message}`, 'error');
+            }
+        }
+
+        function displayPreview(data) {
+            const previewContainer = document.getElementById('dataPreview');
+            
+            if (!data || data.length === 0) {
+                previewContainer.innerHTML = '<p>No data to display</p>';
+                return;
+            }
+
+            // Create table
+            let html = '<div style="overflow-x: auto;"><table class="data-table"><thead><tr>';
+            
+            // Headers
+            const headers = ['Name', 'Age', 'Gender', 'Location', 'Phone', 'Email', 'Job', 'Credit Score'];
+            headers.forEach(header => {
+                html += `<th>${header}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            // Rows
+            data.slice(0, 50).forEach(person => { // Show first 50
+                const age = new Date().getFullYear() - new Date(person.date_of_birth).getFullYear();
+                const location = person.addresses[0] ? `${person.addresses[0].full_address.split(',')[1]}, ${person.addresses[0].full_address.split(',')[2]}` : 'N/A';
+                const phone = person.phone_numbers[0] ? person.phone_numbers[0].number : 'N/A';
+                const email = person.email_addresses[0] ? person.email_addresses[0].email : 'N/A';
+                const job = person.employment_history[0] ? person.employment_history[0].title : 'N/A';
+                const creditScore = person.financial_profile ? person.financial_profile.credit_score : 'N/A';
+
+                html += `<tr>
+                    <td>${person.first_name} ${person.last_name}</td>
+                    <td>${age}</td>
+                    <td>${person.gender}</td>
+                    <td>${location}</td>
+                    <td>${phone}</td>
+                    <td>${email}</td>
+                    <td>${job}</td>
+                    <td>${creditScore}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+            
+            if (data.length > 50) {
+                html += `<p style="text-align: center; margin-top: 15px; color: #666;">
+                    Showing first 50 of ${data.length} records. Use export to download all data.
+                </p>`;
+            }
+
+            previewContainer.innerHTML = html;
+        }
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch(`/api/statistics/${currentTaskId}`);
+                const stats = await response.json();
+                displayStatistics(stats);
+            } catch (error) {
+                addLogEntry(`Failed to load statistics: ${error.message}`, 'error');
+            }
+        }
+
+        function displayStatistics(stats) {
+            const statsContainer = document.getElementById('statisticsContent');
+            
+            let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">';
+
+            // Demographics
+            html += '<div class="progress-stat" style="padding: 20px;"><h4>👥 Demographics</h4>';
+            html += `<p><strong>Total People:</strong> ${stats.demographics.total_people.toLocaleString()}</p>`;
+            
+            if (stats.demographics.gender_distribution) {
+                html += '<p><strong>Gender Distribution:</strong></p><ul>';
+                for (const [gender, count] of Object.entries(stats.demographics.gender_distribution)) {
+                    const percentage = ((count / stats.demographics.total_people) * 100).toFixed(1);
+                    html += `<li>${gender}: ${count} (${percentage}%)</li>`;
+                }
+                html += '</ul>';
+            }
+            html += '</div>';
+
+            // Employment
+            html += '<div class="progress-stat" style="padding: 20px;"><h4>💼 Employment</h4>';
+            html += `<p><strong>Employment Rate:</strong> ${stats.employment.employment_rate}%</p>`;
+            if (stats.employment.average_salary) {
+                html += `<p><strong>Average Salary:</strong> $${stats.employment.average_salary.toLocaleString()}</p>`;
+            }
+            html += '</div>';
+
+            // Financial
+            html += '<div class="progress-stat" style="padding: 20px;"><h4>💳 Financial</h4>';
+            if (stats.financial.average_credit_score) {
+                html += `<p><strong>Average Credit Score:</strong> ${stats.financial.average_credit_score}</p>`;
+            }
+            html += '</div>';
+
+            // Health
+            if (stats.health) {
+                html += '<div class="progress-stat" style="padding: 20px;"><h4>🏥 Health</h4>';
+                if (stats.health.average_allergies) {
+                    html += `<p><strong>Average Allergies:</strong> ${stats.health.average_allergies}</p>`;
+                }
+                html += '</div>';
+            }
+
+            html += '</div>';
+
+            // Generation metadata
+            if (stats.generation_metadata) {
+                html += '<div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">';
+                html += '<h4>⚙️ Generation Performance</h4>';
+                html += `<p><strong>Generation Time:</strong> ${stats.generation_metadata.generation_time?.toFixed(2)} seconds</p>`;
+                html += `<p><strong>Records/Second:</strong> ${stats.generation_metadata.records_per_second?.toFixed(0)}</p>`;
+                html += `<p><strong>Generated At:</strong> ${new Date(stats.generation_metadata.generated_at).toLocaleString()}</p>`;
+                html += '</div>';
+            }
+
+            statsContainer.innerHTML = html;
+        }
+
+        function showValidationSummary(validationSummary) {
+            const summaryContainer = document.getElementById('validationSummary');
+            const detailsContainer = document.getElementById('validationDetails');
+            
+            let html = `<p><strong>Overall Status:</strong> ${validationSummary.overall_status}</p>`;
+            html += `<p><strong>Total Issues:</strong> ${validationSummary.total_issues}</p>`;
+            
+            if (validationSummary.by_severity) {
+                html += '<p><strong>Issues by Severity:</strong></p><ul>';
+                for (const [severity, count] of Object.entries(validationSummary.by_severity)) {
+                    html += `<li>${severity}: ${count}</li>`;
+                }
+                html += '</ul>';
+            }
+            
+            detailsContainer.innerHTML = html;
+            summaryContainer.style.display = 'block';
+        }
+
+        async function exportData(format) {
+            if (!currentTaskId) {
+                addLogEntry('No data to export', 'warning');
+                return;
+            }
+
+            try {
+                addLogEntry(`Starting ${format.toUpperCase()} export`, 'info');
+                
+                const exportStatus = document.getElementById('exportStatus');
+                exportStatus.innerHTML = `<p class="pulse">🔄 Exporting ${format.toUpperCase()}...</p>`;
+
+                const response = await fetch(`/api/export/${currentTaskId}/${format}`);
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `pii_data_enhanced_${currentTaskId}.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    
+                    exportStatus.innerHTML = `<p class="success-message">✅ ${format.toUpperCase()} export completed!</p>`;
+                    addLogEntry(`${format.toUpperCase()} export completed`, 'info');
+                } else {
+                    const error = await response.json();
+                    exportStatus.innerHTML = `<p class="error-message">❌ Export failed: ${error.error}</p>`;
+                    addLogEntry(`Export failed: ${error.error}`, 'error');
+                }
+            } catch (error) {
+                const exportStatus = document.getElementById('exportStatus');
+                exportStatus.innerHTML = `<p class="error-message">❌ Export failed: ${error.message}</p>`;
+                addLogEntry(`Export failed: ${error.message}`, 'error');
+            }
+        }
+
+        function cancelGeneration() {
+            if (currentTaskId && socket) {
+                addLogEntry('Cancellation requested', 'warning');
+                // Note: Would need to implement cancel endpoint
+            }
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showProgressSection() {
+            document.getElementById('progressSection').style.display = 'block';
+        }
+
+        function hideProgressSection() {
+            document.getElementById('progressSection').style.display = 'none';
+        }
+
+        function showResultsSection() {
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+
+        function showError(message) {
+            // Could add a dedicated error display area
+            console.error(message);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeWebSocket();
+            addLogEntry('Enhanced PII Generator initialized', 'info');
+            
+            // Check system status every 30 seconds
+            setInterval(checkSystemStatus, 30000);
+        });
     </script>
 </body>
 </html>

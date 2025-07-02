@@ -21,6 +21,8 @@ A high-performance Python application for generating massive amounts of realisti
 
 - [Quick Start](#-quick-start)
 - [Installation](#-installation)
+  - [Docker Setup](#docker-setup)
+  - [Traditional Setup](#traditional-setup)
 - [Usage](#-usage)
 - [Data Types](#-data-types)
 - [Configuration](#-configuration)
@@ -32,6 +34,7 @@ A high-performance Python application for generating massive amounts of realisti
 
 ## 🏃 Quick Start
 
+### Option 1: Traditional Setup
 ```bash
 # One-line setup
 curl -sSL https://raw.githubusercontent.com/rupesh43210/generateSyntheticData/main/setup.sh | bash
@@ -44,16 +47,52 @@ python web_app.py
 # Visit http://localhost:5001
 ```
 
+### Option 2: Docker Setup (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/rupesh43210/generateSyntheticData.git
+cd generateSyntheticData
+
+# Start with Docker
+docker-compose up -d
+
+# Visit http://localhost:5001
+```
+
 ## 💻 Installation
 
-### Prerequisites
+### Docker Setup
+
+The easiest way to get started is with Docker:
+
+```bash
+# Clone the repository
+git clone https://github.com/rupesh43210/generateSyntheticData.git
+cd generateSyntheticData
+
+# Start all services (includes SQL Server)
+docker-compose up -d
+
+# Check service status
+docker-compose ps
+
+# View logs
+docker-compose logs -f pii-generator
+```
+
+For detailed Docker instructions, see [DOCKER_README.md](DOCKER_README.md).
+
+### Traditional Setup
+
+#### Prerequisites
 
 - Python 3.8 or higher
 - SQL Server ODBC Driver 17 or 18 (for database features)
 - 4GB RAM minimum (8GB recommended for large datasets)
 - 10GB free disk space
 
-### Automated Setup
+#### Automated Setup
 
 ```bash
 # Clone the repository

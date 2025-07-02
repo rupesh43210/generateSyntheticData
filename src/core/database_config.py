@@ -83,8 +83,11 @@ class DataInsertionConfig(BaseModel):
 class DatabaseConfig(BaseModel):
     """Complete database configuration"""
     database: DatabaseConnection = Field(default_factory=DatabaseConnection)
-    schema: SchemaConfig = Field(default_factory=SchemaConfig)
+    schema_config: SchemaConfig = Field(default_factory=SchemaConfig, alias="schema")
     data_insertion: DataInsertionConfig = Field(default_factory=DataInsertionConfig)
+    
+    class Config:
+        populate_by_name = True
     
     @classmethod
     def from_yaml(cls, file_path: str) -> 'DatabaseConfig':
@@ -115,11 +118,11 @@ class DatabaseConfig(BaseModel):
         
         # Schema configuration
         if os.getenv('DB_SCHEMA'):
-            config.schema.name = os.getenv('DB_SCHEMA')
+            config.schema_config.name = os.getenv('DB_SCHEMA')
         if os.getenv('DB_TABLE_BEHAVIOR'):
-            config.schema.table_behavior = os.getenv('DB_TABLE_BEHAVIOR')
+            config.schema_config.table_behavior = os.getenv('DB_TABLE_BEHAVIOR')
         if os.getenv('DB_TABLE_PREFIX'):
-            config.schema.table_prefix = os.getenv('DB_TABLE_PREFIX')
+            config.schema_config.table_prefix = os.getenv('DB_TABLE_PREFIX')
         
         # Data insertion configuration
         if os.getenv('DB_INSERT_MODE'):

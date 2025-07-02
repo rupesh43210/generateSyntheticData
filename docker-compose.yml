@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # PII Generator Application
+  app:
+    build: .
+    container_name: pii-generator
+    ports:
+      - "5001:5001"
+    environment:
+      # Mode: 'file' for CSV/JSON output, 'database' for SQL Server
+      - OUTPUT_MODE=${OUTPUT_MODE:-file}
+      
+      # Optional: External database connection
+      # Set these environment variables to connect to your database:
+      # DB_SERVER, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+      - DB_SERVER=${DB_SERVER:-}
+      - DB_DATABASE=${DB_DATABASE:-}
+      - DB_USERNAME=${DB_USERNAME:-}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+      - DB_PORT=${DB_PORT:-1433}
+      
+      # Application settings
+      - FLASK_ENV=${FLASK_ENV:-production}
+      - BATCH_SIZE=${BATCH_SIZE:-5000}
+      - MAX_WORKERS=${MAX_WORKERS:-4}
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  # Optional: SQL Server (uncomment to include)
+  # sqlserver:
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   container_name: pii-sqlserver
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #     - SA_PASSWORD=YourStrong@Password123
+  #     - MSSQL_PID=Developer
+  #   ports:
+  #     - "1433:1433"
+  #   restart: unless-stopped

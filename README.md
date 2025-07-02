@@ -1,7 +1,7 @@
 # PII Generator - High-Performance Synthetic Data Generator
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+![License](https://img.shields.io/badge/license-MIT-green)
 [![Docker](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/)
 [![Azure SQL](https://img.shields.io/badge/Azure%20SQL-Compatible-orange)](https://azure.microsoft.com/en-us/products/azure-sql/database/)
 
@@ -68,14 +68,14 @@ The easiest way to get started is with Docker:
 git clone https://github.com/rupesh43210/generateSyntheticData.git
 cd generateSyntheticData
 
-# Start all services (includes SQL Server)
+# Start the application
 docker-compose up -d
 
 # Check service status
 docker-compose ps
 
 # View logs
-docker-compose logs -f pii-generator
+docker-compose logs -f app
 ```
 
 For detailed Docker instructions, see [Docker Setup Guide](docs/DOCKER_README.md).
@@ -158,8 +158,7 @@ python pii_gen.py setup-schema
 # Standard web UI
 python web_app.py
 
-# Enhanced web UI with advanced features
-python web_app_enhanced.py
+# The web UI is at http://localhost:5001
 ```
 
 Navigate to `http://localhost:5001` to access the interface.
@@ -168,20 +167,24 @@ Navigate to `http://localhost:5001` to access the interface.
 
 ```python
 from src.generators.person_generator import PersonGenerator
+from src.core.models import GenerationConfig
 
-# Create generator
-generator = PersonGenerator()
+# Create generator with config
+config = GenerationConfig()
+generator = PersonGenerator(config)
 
 # Generate single person
 person = generator.generate_person()
-print(f"Name: {person.name.full_name}")
+print(f"Name: {person.first_name} {person.last_name}")
 print(f"SSN: {person.ssn}")
 
-# Generate batch
-people = generator.generate_batch(1000)
+# Generate multiple people
+people = [generator.generate_person() for _ in range(100)]
 
-# Export to CSV
-generator.export_to_csv(people, "output.csv")
+# Export to CSV using pandas
+import pandas as pd
+df = pd.DataFrame([person.dict() for person in people])
+df.to_csv("output.csv", index=False)
 ```
 
 ## 📊 Data Types
@@ -317,10 +320,11 @@ The project has been significantly cleaned up and simplified:
 │   │   └── ...
 │   └── db/                 # Database operations
 │       ├── azure_sql.py    # SQL Server integration
-│       └── bulk_insert.py  # Optimized bulk operations
+│       └── azure_sql.py    # SQL Server integration
 ├── configs/                # Configuration files
 ├── templates/              # Web UI templates
-└── tests/                  # Test suite
+├── tests/                  # Unit tests
+└── test_scripts/           # Development test scripts
 ```
 
 ## 🔧 API Documentation
@@ -345,8 +349,8 @@ class PersonGenerator:
 ### Database Manager
 
 ```python
-class AzureSQLManager:
-    def create_schema(self, force: bool = False):
+class EnhancedAzureSQLDatabase:
+    def setup_schema(self):
         """Create database schema for all person tables."""
     
     def insert_batch(self, people: List[Person], batch_size: int = 5000):
@@ -375,8 +379,8 @@ class AzureSQLManager:
    ```
 
 2. **Memory Issues**
-   - Enable streaming mode: `--stream`
-   - Reduce batch size: `--batch-size 1000`
+   - Reduce batch size when generating: `-b 1000`
+   - Use fewer threads: `-t 2`
    - Increase system swap space
 
 3. **Database Connection Failed**
@@ -386,7 +390,7 @@ class AzureSQLManager:
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please fork the repository and submit pull requests.
 
 ```bash
 # Fork the repository
@@ -404,7 +408,7 @@ git push origin feature/amazing-feature
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## 🙏 Acknowledgments
 
@@ -414,9 +418,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Documentation**: [Wiki](https://github.com/rupesh43210/generateSyntheticData/wiki)
 - **Issues**: [GitHub Issues](https://github.com/rupesh43210/generateSyntheticData/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/rupesh43210/generateSyntheticData/discussions)
+- **Source Code**: [GitHub Repository](https://github.com/rupesh43210/generateSyntheticData)
 
 ---
 

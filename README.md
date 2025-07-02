@@ -78,7 +78,7 @@ docker-compose ps
 docker-compose logs -f pii-generator
 ```
 
-For detailed Docker instructions, see [DOCKER_README.md](DOCKER_README.md).
+For detailed Docker instructions, see [Docker Setup Guide](docs/DOCKER_README.md).
 
 ### Traditional Setup
 

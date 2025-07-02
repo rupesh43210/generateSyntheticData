@@ -2,9 +2,10 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Docker](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/)
 [![Azure SQL](https://img.shields.io/badge/Azure%20SQL-Compatible-orange)](https://azure.microsoft.com/en-us/products/azure-sql/database/)
 
-A high-performance Python application for generating massive amounts of realistic synthetic Personally Identifiable Information (PII) data. Designed for testing data systems, developing privacy-preserving applications, and seeding databases with realistic test data.
+A high-performance Python application for generating massive amounts of realistic synthetic Personally Identifiable Information (PII) data. Perfect for testing data systems, developing privacy-preserving applications, and seeding databases with realistic test data.
 
 ## 🚀 Key Features
 
@@ -34,29 +35,25 @@ A high-performance Python application for generating massive amounts of realisti
 
 ## 🏃 Quick Start
 
-### Option 1: Traditional Setup
+### Docker (Recommended)
+```bash
+git clone https://github.com/rupesh43210/generateSyntheticData.git
+cd generateSyntheticData
+docker-compose up -d
+
+# Visit http://localhost:5001
+```
+
+### Traditional Setup
 ```bash
 # One-line setup
 curl -sSL https://raw.githubusercontent.com/rupesh43210/generateSyntheticData/main/setup.sh | bash
 
-# Generate your first dataset
-python pii_gen.py generate --count 1000 --output sample_data.csv
+# Generate data via CLI
+python pii_gen.py generate -n 1000 -o sample_data.csv
 
-# Start the web interface
+# Or use web interface
 python web_app.py
-# Visit http://localhost:5001
-```
-
-### Option 2: Docker Setup (Recommended)
-
-```bash
-# Clone the repository
-git clone https://github.com/rupesh43210/generateSyntheticData.git
-cd generateSyntheticData
-
-# Start with Docker
-docker-compose up -d
-
 # Visit http://localhost:5001
 ```
 
@@ -143,19 +140,16 @@ DB_PASSWORD=yourpassword
 
 ```bash
 # Generate data to CSV
-python pii_gen.py generate --count 10000 --output data.csv
+python pii_gen.py generate -n 10000 -o data.csv
 
-# Generate data with custom config
-python pii_gen.py generate --count 5000 --config configs/realistic_config.yaml
+# Generate with different quality profiles
+python pii_gen.py generate -n 5000 --variability-profile messy -o messy_data.csv
 
-# Stream data to database
-python pii_gen.py stream --rate 100 --duration 3600
+# Test database connection
+python pii_gen.py test-connection --server myserver --database mydb
 
 # Create database schema
-python pii_gen.py create-schema
-
-# Validate generated data
-python pii_gen.py validate --input data.csv
+python pii_gen.py setup-schema
 ```
 
 ### Web Interface
@@ -299,6 +293,15 @@ performance:
 3. **Database**: Use bulk insert mode for large datasets
 4. **Memory**: Enable streaming mode for unlimited datasets
 
+## 🧹 Recent Updates (July 2025)
+
+The project has been significantly cleaned up and simplified:
+- **Consolidated codebase**: Removed duplicate implementations
+- **Simplified Docker**: Single Dockerfile and docker-compose.yml
+- **Organized structure**: Documentation in `docs/`, tests in `test_scripts/`
+- **Improved imports**: Fixed all module references
+- **Better defaults**: Works out-of-the-box with file output
+
 ## 🏗️ Architecture
 
 ```
@@ -357,13 +360,15 @@ class AzureSQLManager:
 
 ### Common Issues
 
-1. **ODBC Driver Not Found**
+1. **Database Connection (Optional)**
+   - The app works without a database - it generates CSV/JSON files by default
+   - For SQL Server support, install ODBC drivers:
    ```bash
    # Linux
-   sudo apt-get install msodbcsql18
+   sudo apt-get install unixodbc msodbcsql18
    
-   # macOS
-   brew install msodbcsql18
+   # macOS  
+   brew install unixodbc msodbcsql18
    
    # Windows
    # Download from Microsoft website

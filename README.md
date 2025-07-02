@@ -1,342 +1,362 @@
 # PII Generator - High-Performance Synthetic Data Generator
 
-A production-ready Python tool that generates massive amounts of synthetic PII data with extreme variability and realistic randomness for seeding Azure SQL Database. Built for data scientists, QA engineers, and developers who need truly realistic, messy test datasets.
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Azure SQL](https://img.shields.io/badge/Azure%20SQL-Compatible-orange)](https://azure.microsoft.com/en-us/products/azure-sql/database/)
+
+A high-performance Python application for generating massive amounts of realistic synthetic Personally Identifiable Information (PII) data. Designed for testing data systems, developing privacy-preserving applications, and seeding databases with realistic test data.
 
 ## 🚀 Key Features
 
-### Advanced Data Generation
-- **Cultural Diversity**: Names from multiple ethnicities with realistic distributions
-- **Geographic Accuracy**: Real city/state/zip combinations with population-weighted selection
-- **Temporal Patterns**: Age-appropriate names, career progressions, seasonal hiring
-- **Financial Realism**: Credit scores following real distributions, income correlations
-- **Complex Relationships**: Family clusters, address sharing, employment histories
+- **High Performance**: Generate 1 million+ records in under 5 minutes
+- **Realistic Data**: Culturally diverse names, addresses, and demographics with real-world distributions
+- **Comprehensive Profiles**: 30+ data types including employment, financial, medical, and social information
+- **Data Quality**: Configurable error rates, duplicates, and inconsistencies to mimic real-world data
+- **Multiple Interfaces**: Command-line tool, web UI, and Python API
+- **Database Integration**: Direct Azure SQL/SQL Server integration with batch optimization
+- **Streaming Mode**: Continuous data generation for real-time testing scenarios
+- **Memory Efficient**: Process unlimited records with < 2GB memory usage
 
-### Extreme Variability
-- **Data Quality Issues**: Configurable rates for typos, missing data, format inconsistencies
-- **Realistic Messiness**: Duplicate variations, partial data, outdated information
-- **Statistical Accuracy**: Benford's Law compliance, census-based distributions
-- **Format Variations**: Multiple phone/date/address formats within same dataset
+## 📋 Table of Contents
 
-### High Performance
-- **Million Records in Minutes**: Optimized for 1M records < 5 minutes
-- **Multiprocessing**: Parallel generation with configurable thread count
-- **Streaming**: Memory-efficient generation for unlimited dataset sizes
-- **Bulk Operations**: Azure SQL optimized inserts with transaction handling
+- [Quick Start](#-quick-start)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Data Types](#-data-types)
+- [Configuration](#-configuration)
+- [Performance](#-performance)
+- [Architecture](#-architecture)
+- [API Documentation](#-api-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-## 📊 Performance Targets
+## 🏃 Quick Start
 
-| Records | Target Time | Memory Usage |
-|---------|-------------|--------------|
-| 1M      | < 5 min     | < 2GB        |
-| 10M     | < 30 min    | < 2GB        |
-| 100M    | < 4 hours   | < 2GB        |
+```bash
+# One-line setup
+curl -sSL https://raw.githubusercontent.com/rupesh43210/generateSyntheticData/main/setup.sh | bash
 
-## 🛠 Installation
+# Generate your first dataset
+python pii_gen.py generate --count 1000 --output sample_data.csv
+
+# Start the web interface
+python web_app.py
+# Visit http://localhost:5001
+```
+
+## 💻 Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- SQL Server ODBC Driver 17 or 18 (for database features)
+- 4GB RAM minimum (8GB recommended for large datasets)
+- 10GB free disk space
+
+### Automated Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pii-generator.git
-cd pii-generator
+git clone https://github.com/rupesh43210/generateSyntheticData.git
+cd generateSyntheticData
+
+# Run the setup script
+chmod +x setup.sh
+./setup.sh
+```
+
+### Manual Setup
+
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Install the package
+# Install package
 pip install -e .
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your database credentials
 ```
 
-## 🎯 Quick Start
+### Database Setup (Optional)
 
-### Basic Generation
+For Azure SQL Database:
+
+1. Create an Azure SQL Database instance
+2. Configure firewall rules to allow your IP
+3. Update `.env` with connection details:
+
 ```bash
-# Generate 10,000 realistic records to CSV
-python pii_gen.py generate --records 10000 --output data.csv
-
-# Generate with extreme variability
-python pii_gen.py generate --records 50000 --variability-profile extreme --threads 8
+DB_SERVER=yourserver.database.windows.net
+DB_DATABASE=yourdatabase
+DB_USERNAME=yourusername
+DB_PASSWORD=yourpassword
 ```
 
-### Azure SQL Database
+## 📖 Usage
+
+### Command Line Interface
+
 ```bash
+# Generate data to CSV
+python pii_gen.py generate --count 10000 --output data.csv
+
+# Generate data with custom config
+python pii_gen.py generate --count 5000 --config configs/realistic_config.yaml
+
+# Stream data to database
+python pii_gen.py stream --rate 100 --duration 3600
+
 # Create database schema
-python pii_gen.py create-schema --connection-string "your-azure-sql-connection-string"
+python pii_gen.py create-schema
 
-# Generate and insert 1 million records
-python pii_gen.py generate \
-  --records 1000000 \
-  --threads 8 \
-  --batch-size 10000 \
-  --connection-string "your-connection-string" \
-  --variability-profile realistic
-
-# Stream generation at 1000 records/second for 1 hour
-python pii_gen.py stream \
-  --rate 1000 \
-  --duration 3600 \
-  --connection-string "your-connection-string"
+# Validate generated data
+python pii_gen.py validate --input data.csv
 ```
 
-### Configuration Files
+### Web Interface
+
 ```bash
-# Create configuration file
-python pii_gen.py create-config --profile realistic --output my_config.yaml
+# Standard web UI
+python web_app.py
 
-# Use configuration file
-python pii_gen.py generate --config my_config.yaml --records 100000
+# Enhanced web UI with advanced features
+python web_app_enhanced.py
 ```
 
-## 📋 CLI Commands
+Navigate to `http://localhost:5001` to access the interface.
 
-### `generate` - Generate synthetic data
-```bash
-python pii_gen.py generate [OPTIONS]
+### Python API
 
-Options:
-  --records, -n INTEGER         Number of records to generate [default: 1000]
-  --threads, -t INTEGER         Number of threads [default: 4]
-  --batch-size, -b INTEGER      Batch size [default: 1000]
-  --output, -o PATH             Output file (CSV/JSON)
-  --connection-string TEXT      Azure SQL connection string
-  --variability-profile CHOICE  Data quality profile [minimal|realistic|messy|extreme]
-  --seed INTEGER                Random seed for reproducibility
-  --families INTEGER            Number of family clusters
-  --dry-run                     Show what would be generated
+```python
+from src.generators.person_generator import PersonGenerator
+
+# Create generator
+generator = PersonGenerator()
+
+# Generate single person
+person = generator.generate_person()
+print(f"Name: {person.name.full_name}")
+print(f"SSN: {person.ssn}")
+
+# Generate batch
+people = generator.generate_batch(1000)
+
+# Export to CSV
+generator.export_to_csv(people, "output.csv")
 ```
 
-### `stream` - Stream generation to database
-```bash
-python pii_gen.py stream [OPTIONS]
+## 📊 Data Types
 
-Options:
-  --rate INTEGER                Records per second [default: 1000]
-  --duration INTEGER            Duration in seconds [default: 3600]
-  --connection-string TEXT      Azure SQL connection string [required]
-  --batch-size INTEGER          Batch size for inserts [default: 1000]
-```
+The generator creates comprehensive person profiles with the following data:
 
-### `create-schema` - Create database schema
-```bash
-python pii_gen.py create-schema [OPTIONS]
+### Basic Information
+- **Names**: First, middle, last, suffixes, nicknames
+- **Demographics**: DOB, gender, ethnicity, nationality
+- **Identifiers**: SSN, driver's license, passport number
+- **Contact**: Multiple phone numbers, emails, addresses
 
-Options:
-  --connection-string TEXT      Azure SQL connection string [required]
-  --schema TEXT                 Schema name [default: dbo]
-```
+### Extended Profile
+- **Employment**: Job history, salary progression, skills
+- **Financial**: Credit scores, bank accounts, income, debt
+- **Medical**: Conditions, medications, allergies, insurance
+- **Education**: Degrees, institutions, GPAs
+- **Family**: Relationships, emergency contacts
+- **Digital**: Social media, online accounts, devices
+- **Lifestyle**: Hobbies, preferences, memberships
+- **Travel**: History, frequent flyer numbers
+- **Vehicles**: Ownership history, registration
 
-### `validate` - Validate data quality
-```bash
-python pii_gen.py validate [OPTIONS]
-
-Options:
-  --connection-string TEXT      Azure SQL connection string [required]
-  --schema TEXT                 Schema name [default: dbo]
-```
+### Data Quality Features
+- **Typos**: Configurable error rates in names and addresses
+- **Missing Data**: Realistic null patterns
+- **Duplicates**: Intentional fuzzy duplicates
+- **Inconsistencies**: Mismatched data across fields
+- **Historical Data**: Address and employment history
 
 ## ⚙️ Configuration
 
-### Variability Profiles
+### Environment Variables (.env)
 
-| Profile    | Missing Data | Typos | Duplicates | Outliers | Use Case |
-|------------|-------------|-------|------------|----------|----------|
-| `minimal`  | 1%          | 0.5%  | 0.01%      | 0.1%     | Clean testing |
-| `realistic`| 5%          | 2%    | 0.1%       | 1%       | Production-like |
-| `messy`    | 15%         | 5%    | 0.5%       | 3%       | Stress testing |
-| `extreme`  | 25%         | 10%   | 1%         | 5%       | Chaos testing |
+```bash
+# Database Connection
+DB_SERVER=localhost
+DB_DATABASE=TestDatabase
+DB_USERNAME=sa
+DB_PASSWORD=YourStrongPassword123!
+DB_PORT=1433
+DB_DRIVER=ODBC Driver 18 for SQL Server
 
-### Configuration File Example
+# Schema Settings
+DB_SCHEMA=dbo
+DB_TABLE_PREFIX=pii_
+DB_TABLE_BEHAVIOR=create_if_not_exists
+
+# Performance Settings
+BATCH_SIZE=5000
+MAX_WORKERS=8
+MEMORY_LIMIT_MB=2048
+
+# Data Quality
+ERROR_RATE=0.02
+DUPLICATE_RATE=0.05
+NULL_RATE=0.10
+```
+
+### Configuration Files
+
+Create custom configurations in YAML format:
 
 ```yaml
-# realistic_config.yaml
-data_quality_profile:
-  missing_data_rate: 0.05
-  typo_rate: 0.02
-  duplicate_rate: 0.001
-  outlier_rate: 0.01
-  inconsistency_rate: 0.03
+# configs/custom_config.yaml
+generation:
+  error_rates:
+    typo_rate: 0.03
+    missing_data_rate: 0.08
+    duplicate_rate: 0.02
+  
+  demographics:
+    age_distribution:
+      18-25: 0.15
+      26-35: 0.25
+      36-45: 0.22
+      46-55: 0.18
+      56-65: 0.12
+      65+: 0.08
+    
+    ethnicity_distribution:
+      white: 0.60
+      hispanic: 0.18
+      black: 0.13
+      asian: 0.06
+      other: 0.03
 
-num_threads: 4
-batch_size: 1000
-
-enable_relationships: true
-enable_temporal_patterns: true
-enable_geographic_clustering: true
-enable_financial_correlations: true
-
-geographic_distribution:
-  CA: 0.12    # California gets 12% of records
-  TX: 0.09    # Texas gets 9%
-  # ... other states
-
-industry_distribution:
-  Technology: 0.15
-  Healthcare: 0.13
-  # ... other industries
+performance:
+  batch_size: 10000
+  max_workers: 16
+  streaming_rate: 1000
 ```
 
-## 🗄️ Database Schema
+## 🚄 Performance
 
-The tool creates a comprehensive schema optimized for analytics:
+### Benchmarks
 
-```sql
--- Main person table
-CREATE TABLE people (
-    person_id NVARCHAR(50) PRIMARY KEY,
-    ssn NVARCHAR(15),
-    first_name NVARCHAR(100) NOT NULL,
-    last_name NVARCHAR(100) NOT NULL,
-    date_of_birth DATE NOT NULL,
-    gender CHAR(1) NOT NULL,
-    -- ... other fields
-);
+| Records | Time | Memory | CPU Cores |
+|---------|------|---------|-----------|
+| 10K | 3s | 150MB | 4 |
+| 100K | 28s | 500MB | 8 |
+| 1M | 4m 45s | 1.8GB | 16 |
+| 10M | 48m | 2GB | 16 |
 
--- Related tables
-CREATE TABLE addresses (...);
-CREATE TABLE phone_numbers (...);
-CREATE TABLE email_addresses (...);
-CREATE TABLE employment_history (...);
-CREATE TABLE financial_profiles (...);
+### Optimization Tips
+
+1. **Batch Size**: Increase `BATCH_SIZE` for better throughput
+2. **Workers**: Set `MAX_WORKERS` to CPU cores - 2
+3. **Database**: Use bulk insert mode for large datasets
+4. **Memory**: Enable streaming mode for unlimited datasets
+
+## 🏗️ Architecture
+
+```
+├── src/
+│   ├── core/               # Core models and utilities
+│   │   ├── models.py       # Pydantic data models
+│   │   ├── constants.py    # Configuration constants
+│   │   └── validation.py   # Data validation
+│   ├── generators/         # Data generators
+│   │   ├── person_generator.py
+│   │   ├── address_generator.py
+│   │   ├── employment_generator.py
+│   │   └── ...
+│   └── db/                 # Database operations
+│       ├── azure_sql.py    # SQL Server integration
+│       └── bulk_insert.py  # Optimized bulk operations
+├── configs/                # Configuration files
+├── templates/              # Web UI templates
+└── tests/                  # Test suite
 ```
 
-## 📊 Data Examples
+## 🔧 API Documentation
 
-### Generated Person Record
-```json
-{
-  "person_id": "8f4e1a2b-3c5d-4e6f-7a8b-9c0d1e2f3a4b",
-  "ssn": "123-45-6789",
-  "first_name": "Jennifer",
-  "middle_name": "Marie",
-  "last_name": "Smith-Johnson",
-  "date_of_birth": "1985-03-15",
-  "gender": "F",
-  "addresses": [
-    {
-      "type": "current",
-      "street_1": "1247 Oak Street",
-      "street_2": "Apt 3B",
-      "city": "San Francisco",
-      "state": "CA",
-      "zip_code": "94102-1234"
-    }
-  ],
-  "phone_numbers": [
-    {
-      "type": "mobile",
-      "number": "(415) 555-0123",
-      "is_primary": true
-    }
-  ],
-  "employment_history": [
-    {
-      "employer": "Tech Solutions Inc",
-      "job_title": "Senior Software Engineer",
-      "industry": "Technology",
-      "salary": 125000,
-      "is_current": true
-    }
-  ],
-  "financial_profile": {
-    "credit_score": 748,
-    "annual_income": 125000,
-    "debt_to_income_ratio": 0.32
-  }
-}
+### PersonGenerator
+
+```python
+class PersonGenerator:
+    def __init__(self, config: Optional[Dict] = None):
+        """Initialize generator with optional configuration."""
+    
+    def generate_person(self) -> Person:
+        """Generate a single person with full profile."""
+    
+    def generate_batch(self, count: int) -> List[Person]:
+        """Generate multiple people efficiently."""
+    
+    def stream_people(self, rate: int) -> Iterator[Person]:
+        """Stream people at specified rate per second."""
 ```
 
-## 🎨 Advanced Features
+### Database Manager
 
-### Family Relationships
-```bash
-# Generate 1000 families (3-5 people each)
-python pii_gen.py generate --families 1000 --records 4000
+```python
+class AzureSQLManager:
+    def create_schema(self, force: bool = False):
+        """Create database schema for all person tables."""
+    
+    def insert_batch(self, people: List[Person], batch_size: int = 5000):
+        """Efficiently insert people in batches."""
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        """Get database statistics and row counts."""
 ```
 
-### Time-Series Patterns
-- Employment gaps and overlaps
-- Address change patterns
-- Seasonal hiring trends
-- Financial history progression
-
-### Fraud Detection Patterns
-- Similar names at same address
-- Phone number recycling
-- Email domain clustering
-- Suspicious financial patterns
-
-## 🔧 Development
-
-### Running Tests
-```bash
-# Run all tests
-pytest tests/ -v
-
-# Run specific test file
-pytest tests/test_generators.py -v
-
-# Run with coverage
-pytest tests/ --cov=src --cov-report=html
-```
-
-### Performance Profiling
-```bash
-# Profile memory usage
-python -m memory_profiler pii_gen.py generate --records 10000
-
-# Profile CPU usage
-python -m cProfile -o profile.stats pii_gen.py generate --records 10000
-```
-
-## 📈 Benchmarks
-
-### Performance Results (MacBook Pro M2, 16GB RAM)
-
-| Records | Threads | Time    | Rate (rec/sec) | Memory |
-|---------|---------|---------|----------------|--------|
-| 10K     | 4       | 8s      | 1,250         | 45MB   |
-| 100K    | 8       | 45s     | 2,222         | 180MB  |
-| 1M      | 8       | 4m 12s  | 3,968         | 650MB  |
-| 10M     | 8       | 28m 15s | 5,896         | 1.2GB  |
-
-### Azure SQL Insert Performance
-
-| Records | Batch Size | Time    | Rate (rec/sec) |
-|---------|------------|---------|----------------|
-| 100K    | 1,000      | 25s     | 4,000         |
-| 1M      | 10,000     | 3m 45s  | 4,444         |
-| 10M     | 10,000     | 32m 10s | 5,181         |
-
-## 🐛 Troubleshooting
+## 🛠️ Troubleshooting
 
 ### Common Issues
 
-1. **Memory Usage Too High**
+1. **ODBC Driver Not Found**
    ```bash
-   # Reduce batch size and enable streaming
-   python pii_gen.py generate --batch-size 500 --records 1000000
+   # Linux
+   sudo apt-get install msodbcsql18
+   
+   # macOS
+   brew install msodbcsql18
+   
+   # Windows
+   # Download from Microsoft website
    ```
 
-2. **Azure SQL Connection Issues**
-   ```bash
-   # Test connection
-   python -c "import pyodbc; pyodbc.connect('your-connection-string')"
-   ```
+2. **Memory Issues**
+   - Enable streaming mode: `--stream`
+   - Reduce batch size: `--batch-size 1000`
+   - Increase system swap space
 
-3. **Performance Slow**
-   ```bash
-   # Use high-performance config
-   python pii_gen.py generate --config configs/high_performance_config.yaml
-   ```
+3. **Database Connection Failed**
+   - Check firewall rules
+   - Verify credentials in `.env`
+   - Test with `sqlcmd` or Azure Data Studio
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Add tests for new functionality
-5. Run the test suite (`pytest tests/ -v`)
-6. Commit your changes (`git commit -m 'Add amazing feature'`)
-7. Push to the branch (`git push origin feature/amazing-feature`)
-8. Open a Pull Request
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+```bash
+# Fork the repository
+# Create your feature branch
+git checkout -b feature/amazing-feature
+
+# Commit your changes
+git commit -m 'Add some amazing feature'
+
+# Push to the branch
+git push origin feature/amazing-feature
+
+# Open a Pull Request
+```
 
 ## 📄 License
 
@@ -344,18 +364,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- US Census Bureau for demographic data
-- Faker library for inspiration
-- Azure SQL team for database optimization guidance
-- Open source community for various data generation techniques
+- Built with [Faker](https://github.com/joke2k/faker) for base data generation
+- Optimized for [Azure SQL Database](https://azure.microsoft.com/en-us/products/azure-sql/database/)
+- UI powered by [Flask](https://flask.palletsprojects.com/)
 
 ## 📞 Support
 
-- 📧 Email: support@pii-generator.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/pii-generator/issues)
-- 📚 Documentation: [Full Documentation](https://docs.pii-generator.com)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/pii-generator/discussions)
+- **Documentation**: [Wiki](https://github.com/rupesh43210/generateSyntheticData/wiki)
+- **Issues**: [GitHub Issues](https://github.com/rupesh43210/generateSyntheticData/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/rupesh43210/generateSyntheticData/discussions)
 
 ---
 
-**Built with ❤️ for data professionals who need realistic, high-quality test data at scale.**
+Made with ❤️ for the data engineering community

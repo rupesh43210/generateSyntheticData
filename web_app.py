@@ -4,7 +4,12 @@ Enhanced PII Generator Web Application with robust features
 """
 
 from flask import Flask, render_template, request, jsonify, send_file
-from flask_socketio import SocketIO, emit, join_room, leave_room
+try:
+    from flask_socketio import SocketIO, emit, join_room, leave_room
+    SOCKETIO_AVAILABLE = True
+except ImportError:
+    SOCKETIO_AVAILABLE = False
+    SocketIO = None
 import json
 import csv
 import io
@@ -61,8 +66,11 @@ logger.info("Person model rebuild completed during imports")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pii-generator-enhanced-secret-key'
 
-# Initialize SocketIO for real-time updates
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
+# Initialize SocketIO for real-time updates if available
+if SOCKETIO_AVAILABLE:
+    socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
+else:
+    socketio = None
 
 # Global executor for background tasks
 executor = ThreadPoolExecutor(max_workers=8)
@@ -76,18 +84,19 @@ data_validator = DataValidator()
 def send_progress_update(task_id, status, progress_percent, current_step, current_count, total_count, elapsed_time=0, rate_per_second=0, estimated_remaining=0):
     """Send WebSocket progress update safely from main thread"""
     try:
-        socketio.emit('progress_update', {
-            'task_id': task_id,
-            'task_type': 'generation',
-            'status': status,
-            'progress_percent': progress_percent,
-            'current_step': current_step,
-            'current_count': current_count,
-            'total_count': total_count,
-            'elapsed_time': elapsed_time,
-            'estimated_remaining': estimated_remaining,
-            'rate_per_second': rate_per_second
-        })
+        if SOCKETIO_AVAILABLE and socketio:
+            socketio.emit('progress_update', {
+                'task_id': task_id,
+                'task_type': 'generation',
+                'status': status,
+                'progress_percent': progress_percent,
+                'current_step': current_step,
+                'current_count': current_count,
+                'total_count': total_count,
+                'elapsed_time': elapsed_time,
+                'estimated_remaining': estimated_remaining,
+                'rate_per_second': rate_per_second
+            })
     except Exception as e:
         # Don't let WebSocket errors break generation
         logger.warning(f"Failed to send WebSocket update: {e}")
@@ -1037,35 +1046,36 @@ def get_error_log():
     """Get system error log"""
     return jsonify(error_handler.get_error_summary())
 
-# WebSocket event handlers
-@socketio.on('connect')
-def handle_connect():
-    logger.info(f"Client connected: {request.sid}")
-    emit('connected', {'message': 'Connected to PII Generator'})
+# WebSocket event handlers (only if SocketIO is available)
+if SOCKETIO_AVAILABLE and socketio:
+    @socketio.on('connect')
+    def handle_connect():
+        logger.info(f"Client connected: {request.sid}")
+        emit('connected', {'message': 'Connected to PII Generator'})
 
-@socketio.on('disconnect')
-def handle_disconnect():
-    logger.info(f"Client disconnected: {request.sid}")
-    # WebSocket subscription not needed since we use polling
+    @socketio.on('disconnect')
+    def handle_disconnect():
+        logger.info(f"Client disconnected: {request.sid}")
+        # WebSocket subscription not needed since we use polling
 
-@socketio.on('subscribe_task')
-def handle_subscribe_task(data):
-    task_id = data.get('task_id')
-    if task_id:
-        # Just acknowledge - progress is tracked via polling
-        emit('subscribed', {'task_id': task_id})
+    @socketio.on('subscribe_task')
+    def handle_subscribe_task(data):
+        task_id = data.get('task_id')
+        if task_id:
+            # Just acknowledge - progress is tracked via polling
+            emit('subscribed', {'task_id': task_id})
 
-@socketio.on('unsubscribe_task')
-def handle_unsubscribe_task(data):
-    task_id = data.get('task_id')
-    if task_id:
-        # Just acknowledge - no actual subscription to remove
-        emit('unsubscribed', {'task_id': task_id})
+    @socketio.on('unsubscribe_task')
+    def handle_unsubscribe_task(data):
+        task_id = data.get('task_id')
+        if task_id:
+            # Just acknowledge - no actual subscription to remove
+            emit('unsubscribed', {'task_id': task_id})
 
-@socketio.on('join_progress')
-def handle_join_progress():
-    join_room('progress_updates')
-    emit('joined_progress', {'message': 'Joined progress updates room'})
+    @socketio.on('join_progress')
+    def handle_join_progress():
+        join_room('progress_updates')
+        emit('joined_progress', {'message': 'Joined progress updates room'})
 
 if __name__ == '__main__':
     # Create templates directory if it doesn't exist
@@ -1073,4 +1083,7 @@ if __name__ == '__main__':
     os.makedirs('static', exist_ok=True)
     
     logger.info("Starting enhanced PII Generator with robust features")
-    socketio.run(app, debug=True, host='0.0.0.0', port=5001)
+    if SOCKETIO_AVAILABLE and socketio:
+        socketio.run(app, debug=True, host='0.0.0.0', port=5001)
+    else:
+        app.run(debug=True, host='0.0.0.0', port=5001)

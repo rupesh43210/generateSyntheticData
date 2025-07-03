@@ -54,7 +54,11 @@ case "$1" in
         wait_for_db
         create_schema
         echo "Starting web application..."
-        exec python web_app.py
+        echo "Python path: $(which python)"
+        echo "Installed packages:"
+        pip list | grep -i flask
+        # For now, use test_app.py to verify Docker deployment
+        exec python test_app.py
         ;;
     web-enhanced)
         wait_for_db

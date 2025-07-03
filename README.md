@@ -17,6 +17,9 @@ A high-performance Python application for generating massive amounts of realisti
 - **Database Integration**: Direct Azure SQL/SQL Server integration with batch optimization
 - **Streaming Mode**: Continuous data generation for real-time testing scenarios
 - **Memory Efficient**: Process unlimited records with < 2GB memory usage
+- **Multiple Export Formats**: CSV, JSON, Parquet, and XML support
+- **Real-time Progress Tracking**: Live updates with records/second and time estimates
+- **Docker Ready**: One-command deployment with Docker Compose
 
 ## 📋 Table of Contents
 
@@ -71,12 +74,24 @@ cd generateSyntheticData
 # Start the application
 docker-compose up -d
 
+# The web interface will be available at http://localhost:5001
+
 # Check service status
 docker-compose ps
 
 # View logs
 docker-compose logs -f app
+
+# Stop the application
+docker-compose down
 ```
+
+#### Docker Features:
+- Web interface at http://localhost:5001
+- No database setup required (uses file-based storage)
+- Automatic dependency installation
+- Runs as non-root user for security
+- Persistent data in `/app/output` directory
 
 For detailed Docker instructions, see [Docker Setup Guide](docs/DOCKER_README.md).
 
@@ -155,13 +170,22 @@ python pii_gen.py setup-schema
 ### Web Interface
 
 ```bash
-# Standard web UI
+# Standard web UI (without Docker)
 python web_app.py
 
-# The web UI is at http://localhost:5001
+# Docker web UI (recommended)
+docker-compose up -d
 ```
 
 Navigate to `http://localhost:5001` to access the interface.
+
+#### Web Interface Features:
+- **Real-time Progress**: Live updates with progress bar and statistics
+- **Multiple Export Formats**: Download as CSV, JSON, Parquet, or XML
+- **Data Preview**: View generated data before downloading
+- **Statistics Dashboard**: Demographics, employment, and financial statistics
+- **Configurable Generation**: Set record count, data quality, and processing threads
+- **WebSocket Support**: Real-time updates (when available)
 
 ### Python API
 
@@ -298,12 +322,15 @@ performance:
 
 ## 🧹 Recent Updates (July 2025)
 
-The project has been significantly cleaned up and simplified:
-- **Consolidated codebase**: Removed duplicate implementations
-- **Simplified Docker**: Single Dockerfile and docker-compose.yml
-- **Organized structure**: Documentation in `docs/`, tests in `test_scripts/`
-- **Improved imports**: Fixed all module references
-- **Better defaults**: Works out-of-the-box with file output
+The project has been significantly improved:
+- **Docker Deployment**: Full Docker support with web interface
+- **Export Formats**: Added Parquet and XML export capabilities
+- **Real-time Progress**: Live generation statistics and time estimates
+- **Fixed Web Interface**: Resolved all JavaScript errors and missing endpoints
+- **Unlimited Generation**: Removed 100-record limit, now supports unlimited records
+- **Better Performance**: Optimized data generation with configurable delays
+- **Enhanced UI**: Improved data preview and statistics display
+- **Security**: Docker runs as non-root user for better security
 
 ## 🏗️ Architecture
 

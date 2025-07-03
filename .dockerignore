@@ -50,10 +50,12 @@ docs/
 
 # Tests
 tests/
-test_*.py
-*_test.py
 pytest.ini
 .coveragerc
+# Keep our test apps
+!test_app.py
+!web_app_simple.py
+!web_app_docker.py
 
 # Build artifacts
 build/

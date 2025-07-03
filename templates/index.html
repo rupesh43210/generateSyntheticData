@@ -897,8 +897,14 @@
             if (stats.generation_metadata) {
                 html += '<div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">';
                 html += '<h4>⚙️ Generation Performance</h4>';
-                html += `<p><strong>Generation Time:</strong> ${stats.generation_metadata.generation_time?.toFixed(2)} seconds</p>`;
-                html += `<p><strong>Records/Second:</strong> ${stats.generation_metadata.records_per_second?.toFixed(0)}</p>`;
+                const genTime = typeof stats.generation_metadata.generation_time === 'number' ? 
+                    stats.generation_metadata.generation_time.toFixed(2) : 
+                    stats.generation_metadata.generation_time;
+                const recPerSec = typeof stats.generation_metadata.records_per_second === 'number' ? 
+                    Math.round(stats.generation_metadata.records_per_second).toLocaleString() : 
+                    stats.generation_metadata.records_per_second;
+                html += `<p><strong>Generation Time:</strong> ${genTime} seconds</p>`;
+                html += `<p><strong>Records/Second:</strong> ${recPerSec}</p>`;
                 html += `<p><strong>Generated At:</strong> ${new Date(stats.generation_metadata.generated_at).toLocaleString()}</p>`;
                 html += '</div>';
             }

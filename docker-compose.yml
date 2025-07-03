@@ -5,6 +5,7 @@ services:
   app:
     build: .
     container_name: pii-generator
+    command: ["python", "web_app_docker.py"]
     ports:
       - "5001:5001"
     environment:
